@@ -1,0 +1,17 @@
+{
+  "name": "tpfinalaydai",
+  "productName": "tpfinalaydai",
+  "version": "1.0.0",
+  "description": "Herramienta para usar algoritmos geométricos básicos.",
+  "scripts": {
+    "electron-packager": "electron-packager"
+  },
+  "author": "Nahuel Dallacamina",
+  "license": "MIT",
+  "config": {},
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-packager": "^12.2.0"
+  }
+}
