@@ -20,22 +20,44 @@ project(TPFinalAyDAI)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES src/cpp/test.hpp)
+include_directories(src/native/cpp/include)
+
+set(SOURCE_FILES )
+
+set(TESTS_FILES )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
     set(WASM_MODULE_NAME WASMModule)
 
-    set(WASM_GENERATED_DIR ${PROJECT_SOURCE_DIR}/src/generated)
+    string(TOLOWER "${CMAKE_BUILD_TYPE}" WASM_BUILD_TYPE)
 
-    add_executable(${WASM_MODULE_NAME} ${SOURCE_FILES} src/cpp/wasm.cpp)
+    set(WASM_BUILD_DIR ${PROJECT_SOURCE_DIR}/web-build-${WASM_BUILD_TYPE}/wasm)
+
+    add_executable(${WASM_MODULE_NAME} ${SOURCE_FILES} src/native/cpp/wasm.cpp)
     add_custom_command(
             TARGET ${WASM_MODULE_NAME}
             POST_BUILD
-            COMMAND mkdir ARGS -p ${WASM_GENERATED_DIR}
-            COMMAND cp ARGS -f -t ${WASM_GENERATED_DIR} ${CMAKE_BINARY_DIR}/${WASM_MODULE_NAME}.js ${CMAKE_BINARY_DIR}/${WASM_MODULE_NAME}.wasm
-            BYPRODUCTS ${WASM_GENERATED_DIR}/${WASM_MODULE_NAME}.js ${WASM_GENERATED_DIR}/${WASM_MODULE_NAME}.wasm
-            COMMENT "Built files copied to: ${WASM_GENERATED_DIR}"
+            COMMAND mkdir ARGS -p ${WASM_BUILD_DIR}
+            COMMAND cp ARGS -f -t ${WASM_BUILD_DIR} ${CMAKE_BINARY_DIR}/${WASM_MODULE_NAME}.js ${CMAKE_BINARY_DIR}/${WASM_MODULE_NAME}.wasm
+            COMMENT "Built files copied to: ${WASM_BUILD_DIR}"
     )
+
+    if(WASM_BUILD_TYPE MATCHES "^(release|debug)$")
+        add_custom_command(
+                TARGET ${WASM_MODULE_NAME}
+                POST_BUILD
+                COMMAND npm ARGS run web-build-${WASM_BUILD_TYPE}
+                COMMENT "Building web..."
+        )
+    endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/cpp/cli.cpp)
+    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
 endif()
+
+add_executable(Tests
+        src/native/cpp/tests/Test.hpp
+        src/native/cpp/tests/impl/tests_init.cpp
+        ${SOURCE_FILES}
+        ${TESTS_FILES}
+        src/native/cpp/tests/impl/tests.cpp
+)

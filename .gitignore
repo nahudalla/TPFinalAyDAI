@@ -1,4 +1,4 @@
 node_modules
 cmake-build-*
-src/generated
-packaged_release
+web-build-*
+packaged-release
