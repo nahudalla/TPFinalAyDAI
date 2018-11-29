@@ -22,9 +22,20 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(src/native/cpp/include)
 
-set(SOURCE_FILES )
+set(SOURCE_FILES
+        src/native/cpp/include/algor/List.hpp
+        src/native/cpp/include/algor/Point.hpp
+        src/native/cpp/include/algor/Segment.hpp
+        src/native/cpp/include/algor/Vector.hpp
+        src/native/cpp/algor/Vector.cpp
+)
 
-set(TESTS_FILES )
+set(TESTS_FILES
+        src/native/cpp/tests/algor/List.cpp
+        src/native/cpp/tests/algor/Point.cpp
+        src/native/cpp/tests/algor/Vector.cpp
+        src/native/cpp/tests/algor/Segment.cpp
+)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
     set(WASM_MODULE_NAME WASMModule)
@@ -51,7 +62,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
+    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp src/native/cpp/tests/algor/List.cpp)
 endif()
 
 add_executable(Tests
