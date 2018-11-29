@@ -6,7 +6,7 @@
 int main() {
     std::size_t failed = 0, succeeded = 0;
     for(auto const& test : Tests::Test::tests) {
-        std::cout << "RUNNING TEST " << test.name << " ... ";
+        std::cout << "RUNNING TEST " << test.name << " ... " << std::flush;
         bool ok = false; bool error = false;
         try { ok = test.test();
         }catch(...){ error = true; }
