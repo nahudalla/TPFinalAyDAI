@@ -1,9 +1,15 @@
 #ifndef TPFINALAYDAI_LIST_HPP
 #define TPFINALAYDAI_LIST_HPP
 
+#include <algor/Comparator.hpp>
+
 namespace algor {
     template<typename T>
     class List {
+    public:
+        class Iterator;
+
+    private:
         struct Node {
             T elem;
             Node *next;
@@ -11,9 +17,88 @@ namespace algor {
 
         Node *first = nullptr;
         Node *last = nullptr;
-    public:
-        class Iterator;
 
+        void merge(Comparator<T> const& cmp, Iterator & a_begin, Iterator b, Iterator & end) {
+            // IMPORTANTE: Los iteradores a_begin y end DEBEN ser actualizados para que apunten
+            // a los nuevos nodos de inicio y fin de la lista ordenada
+
+            Iterator a = a_begin;
+
+            while(a != b && b != end) {
+                if(cmp.compare(*a, *b) > 0) {
+                    // Incremento b antes de modificarlo para no perder el siguiente
+                    auto b_next = b; b_next.next();
+
+                    // Saco b de su lugar
+                    b.prev->next = b.curr->next;
+
+                    // Actualizo iteradores
+                    b_next.prev = b.prev;
+                    if(b_next == end) end.prev = b.prev;
+
+                    // Si b es el último, actualizo el puntero al último elemento de la lista
+                    if(b.curr->next == nullptr) {
+                        this->last = b.prev;
+                    }
+
+                    // Pongo b antes que a
+                    if(a.prev == nullptr) {
+                        this->first = b.curr;
+                    } else {
+                        a.prev->next = b.curr;
+                    }
+                    b.curr->next = a.curr;
+
+                    // Actualizo iteradores
+                    b.prev = a.prev;
+                    if(a == a_begin) {
+                        a_begin = b;
+                    }
+                    a.prev = b.curr;
+
+                    // Incremento el iterador de b
+                    b = b_next;
+                } else {
+                    a.next();
+                }
+            }
+        }
+
+        Iterator find_middle(Iterator begin, Iterator const& end) {
+            Iterator slow = std::move(begin);
+            Iterator fast = slow; fast.next();
+
+            while(fast != end) {
+                fast.next();
+                if(fast != end) {
+                    slow.next();
+                    fast.next();
+                }
+            }
+
+            slow.next();
+
+            return std::move(slow);
+        }
+
+        void merge_sort(Comparator<T> const& cmp, Iterator & begin, Iterator & end) {
+            // Si hay menos de dos elementos, ya está ordenada
+            {
+                Iterator next;
+                if (begin == end || ((next = begin), next.next()), next == end) return;
+            }
+
+            // Split (Divide)
+            Iterator a_end = this->find_middle(begin, end);
+
+            // Sort
+            this->merge_sort(cmp, begin, a_end);
+            this->merge_sort(cmp, a_end, end);
+
+            // Merge (Conquer)
+            this->merge(cmp, begin, a_end, end);
+        }
+    public:
         List() = default;
 
         ~List() {
@@ -60,6 +145,16 @@ namespace algor {
             return Iterator(nullptr, nullptr);
         }
 
+        const Iterator cbegin() const {
+            // TODO: test
+            return Iterator(nullptr, this->first);
+        }
+
+        const Iterator cend() const {
+            // TODO: test
+            return Iterator(nullptr, nullptr);
+        }
+
         void remove(Iterator &it) {
             auto next = it.curr->next;
 
@@ -102,23 +197,10 @@ namespace algor {
             e2.curr = e1_curr;
         }
 
-        void sort() {
-            auto curr = this->begin();
-            auto end = this->end();
-            while (curr != end) {
-                auto it = curr;
-                it.next();
-
-                while (it != end) {
-                    if (*it < *curr) {
-                        this->swap(it, curr);
-                    }
-
-                    it.next();
-                }
-
-                curr.next();
-            }
+        void sort(Comparator<T> const& cmp = Comparator<T>()) {
+            auto b = this->begin();
+            auto e = this->end();
+            this->merge_sort(cmp, b, e);
         }
 
         class Iterator {
@@ -147,7 +229,18 @@ namespace algor {
                     prev = curr;
                     curr = curr->next; // Si hay nodo actual, me muevo al siguiente
                 }
+
                 return *this;
+            }
+
+            Iterator operator++() {
+                Iterator tmp = *this;
+                this->next();
+                return tmp;
+            }
+
+            Iterator &operator++(int) {
+                return this->next();
             }
 
             bool isDereferentiable() const {
@@ -160,6 +253,11 @@ namespace algor {
             }
 
             T &operator*() {
+                return curr->elem;
+            }
+
+            T const&operator*() const {
+                // TODO: test
                 return curr->elem;
             }
 
