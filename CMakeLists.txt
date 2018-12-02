@@ -28,6 +28,7 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/Segment.hpp
         src/native/cpp/include/algor/Vector.hpp
         src/native/cpp/algor/Vector.cpp
+        src/native/cpp/include/algor/Comparator.hpp
 )
 
 set(TESTS_FILES
