@@ -18,7 +18,7 @@ bool list_swap(); ADD_TEST(LIST_SWAP, list_swap);
 bool list_sort(); ADD_TEST(LIST_SORT, list_sort);
 
 List<int> create_list(int cant);
-bool is_ordered(List<int> & list);
+bool is_ordered(List<int> & list, int cant);
 
 bool list_create() {
     for (int i = 0; i < 10; ++i) {
@@ -237,12 +237,12 @@ bool list_sort() {
             }
 
             // Second, make sure that it is really shuffled
-        }while(is_ordered(list));
+        }while(is_ordered(list, i));
 
         // Third, sort the list
         list.sort();
 
-        if(!is_ordered(list)) return false;
+        if(!is_ordered(list, i)) return false;
     }
 
     return true;
@@ -258,7 +258,7 @@ List<int> create_list(int cant) {
     return list;
 }
 
-bool is_ordered(List<int> & list) {
+bool is_ordered(List<int> & list, int cant) {
     auto it = list.begin();
     auto end = list.end();
     int i = 0;
@@ -269,5 +269,5 @@ bool is_ordered(List<int> & list) {
         i++;
     }
 
-    return true;
+    return i == cant;
 }
