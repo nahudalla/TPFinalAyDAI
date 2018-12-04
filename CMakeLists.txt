@@ -24,6 +24,9 @@ include_directories(src/native/cpp/include)
 
 set(SOURCE_FILES
         src/native/cpp/include/algor/List.hpp
+        src/native/cpp/include/algor/List_impl/ConstIterator.hpp
+        src/native/cpp/include/algor/List_impl/Node.hpp
+        src/native/cpp/include/algor/List_impl/Iterator.hpp
         src/native/cpp/include/algor/Point.hpp
         src/native/cpp/include/algor/Segment.hpp
         src/native/cpp/include/algor/Vector.hpp

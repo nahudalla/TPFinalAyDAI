@@ -55,10 +55,21 @@ bool list_iterator() {
         auto list = create_list(i);
 
         auto it = list.begin();
+        auto it_const = list.cbegin();
 
         for (int j = 0; j < i; ++j) {
             if(!it.isDereferentiable() || *it != j) return false;
-            it.next();
+
+            if(j%3 == 0) {
+                it.next();
+                it_const.next();
+            } else if(j%2 == 0) {
+                it++;
+                it_const++;
+            } else {
+                ++it;
+                ++it_const;
+            }
         }
 
         if(it.isDereferentiable()) return false;
@@ -167,7 +178,7 @@ bool list_remove_element() {
 
                 list.remove(it);
 
-                if(it2 != it) return false;
+                it = it2;
             } else it.next();
         }
 
@@ -189,19 +200,23 @@ bool list_swap() {
         auto list = create_list(i);
         auto it = list.begin();
         auto end = list.end();
+        auto it_prev = end;
 
         while(it != end) {
-            auto it2 = it;
+            auto next = it; next.next();
+            list.swap(it, next);
 
-            it2.next();
+            if(it_prev == end) {
+                it_prev = list.begin().next();
+            } else {
+                it_prev.next().next();
+            }
 
-            if(it2) list.swap(it, it2);
-
-            it.next(); it.next();
+            it = it_prev; it.next();
         }
 
         it = list.begin();
-        for (int j = 0; j < i-1; ++j, it.next()) {
+        for (int j = 0; j < (i%2==0?i:i-1); ++j, it.next()) {
             if(j%2 == 0) {
                 if(*it != j+1) return false;
             } else {
@@ -255,7 +270,7 @@ List<int> create_list(int cant) {
         list.add(i);
     }
 
-    return list;
+    return std::move(list);
 }
 
 bool is_ordered(List<int> & list, int cant) {
