@@ -39,6 +39,7 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/RBTree_impl/DataNode.hpp
         src/native/cpp/include/algor/RBTree_impl/ConstIterator.hpp
         src/native/cpp/include/algor/RBTree_impl/Iterator.hpp
+        src/native/cpp/include/algor/AnySegmentsIntersect.hpp
 )
 
 set(TESTS_FILES
