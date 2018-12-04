@@ -12,6 +12,8 @@ namespace algor {
 namespace algor::__detail_RBTree {
     template <typename T, bool reverse = false>
     class Iterator : public ConstIterator<T, Node<T>, reverse> {
+        typedef ConstIterator<T, Node<T>, reverse> Base;
+
         explicit Iterator(Node<T> * node) : ConstIterator<T, Node<T>>(node)
         {}
 
@@ -31,6 +33,36 @@ namespace algor::__detail_RBTree {
 
         T &operator*() {
             return *(this->node->getData());
+        }
+
+        Iterator &next() {
+            Base::next();
+            return *this;
+        }
+
+        Iterator &operator++() {
+            return this->next();
+        }
+
+        const Iterator operator++(int) {
+            auto tmp = *this;
+            this->next();
+            return std::move(tmp);
+        }
+
+        Iterator &previous() {
+            Base::previous();
+            return *this;
+        }
+
+        Iterator &operator--() {
+            return this->previous();
+        }
+
+        const Iterator operator--(int) {
+            auto tmp = *this;
+            this->previous();
+            return std::move(tmp);
         }
     };
 

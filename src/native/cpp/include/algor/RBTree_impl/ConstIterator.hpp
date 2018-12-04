@@ -83,14 +83,14 @@ namespace algor::__detail_RBTree {
             return *this;
         }
 
-        ConstIterator operator++() {
-            ConstIterator tmp = *this;
-            this->next();
-            return tmp;
+        ConstIterator &operator++() {
+            return this->next();
         }
 
         const ConstIterator operator++(int) {
-            return this->next();
+            auto tmp = *this;
+            this->next();
+            return std::move(tmp);
         }
 
         ConstIterator &previous() {
@@ -103,14 +103,14 @@ namespace algor::__detail_RBTree {
             return *this;
         }
 
-        ConstIterator operator--() {
-            ConstIterator tmp = *this;
-            this->previous();
-            return tmp;
+        ConstIterator &operator--() {
+            return this->previous();
         }
 
         const ConstIterator operator--(int) {
-            return this->previous();
+            auto tmp = *this;
+            this->previous();
+            return std::move(tmp);
         }
     };
 
