@@ -30,6 +30,12 @@ set(SOURCE_FILES
         src/native/cpp/algor/Vector.cpp
         src/native/cpp/include/algor/Comparator.hpp
         src/native/cpp/include/algor/RBTree.hpp
+        src/native/cpp/include/algor/RBTree_impl/Node.hpp
+        src/native/cpp/include/algor/RBTree_impl/Color.hpp
+        src/native/cpp/include/algor/RBTree_impl/Nil.hpp
+        src/native/cpp/include/algor/RBTree_impl/DataNode.hpp
+        src/native/cpp/include/algor/RBTree_impl/ConstIterator.hpp
+        src/native/cpp/include/algor/RBTree_impl/Iterator.hpp
 )
 
 set(TESTS_FILES
@@ -37,6 +43,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Point.cpp
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
+        src/native/cpp/tests/algor/RBTree.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
@@ -64,7 +71,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp src/native/cpp/tests/algor/List.cpp)
+    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
 endif()
 
 add_executable(Tests
