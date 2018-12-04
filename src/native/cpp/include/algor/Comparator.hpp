@@ -2,9 +2,6 @@
 #define TPFINALAYDAI_COMPARATOR_HPP
 
 namespace algor {
-    // TODO: tests
-
-
     template <typename T>
     class Comparator {
     public:
