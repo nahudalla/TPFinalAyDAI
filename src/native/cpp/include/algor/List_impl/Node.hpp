@@ -6,6 +6,18 @@ namespace algor::__detail__List {
     struct Node {
         T elem;
         Node *next;
+
+        Node * clone(Node * & last) {
+            Node * new_node = new Node{this->elem, nullptr};
+
+            if(this->next != nullptr) {
+                new_node->next = this->next->clone(last);
+            } else {
+                last = new_node;
+            }
+
+            return new_node;
+        }
     };
 }
 

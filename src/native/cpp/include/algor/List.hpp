@@ -18,8 +18,8 @@ namespace algor {
         typedef __detail__List::ConstIterator<T> ConstIterator;
 
     private:
-        Node *first = nullptr;
-        Node *last = nullptr;
+        Node * first = nullptr;
+        Node * last = nullptr;
 
         void merge(Comparator<T> const& cmp, Iterator & a_begin, Iterator b, Iterator & end) {
             // IMPORTANTE: Los iteradores a_begin y end DEBEN ser actualizados para que apunten
@@ -104,8 +104,17 @@ namespace algor {
     public:
         List() = default;
 
-        // TODO: List(List const&);
-        // TODO: List &operator=(List const&);
+        List(List const& other) {*this = other;}
+        List &operator=(List const& other) {
+            if(this != &other) {
+                this->~List();
+                if(other.first != nullptr) {
+                    this->first = other.first->clone(this->last);
+                }
+            }
+
+            return *this;
+        }
         List(List && other) noexcept {*this = std::move(other);}
         List &operator=(List && rhs) noexcept {
             if(this != &rhs) {
@@ -116,9 +125,9 @@ namespace algor {
             return *this;
         }
         ~List() {
-            while (first != nullptr) {
-                auto *tmp = first;
-                first = first->next;
+            while (this->first != nullptr) {
+                auto *tmp = this->first;
+                this->first = this->first->next;
                 delete tmp;
             }
             this->last = nullptr;
