@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include <algor/RBTree_impl/Color.hpp>
+#include <algor/Comparator.hpp>
 
 namespace algor::__detail_RBTree {
     template <typename> class Nil;
@@ -231,14 +232,8 @@ namespace algor::__detail_RBTree {
         void setColor(Color color) { this->color = color; }
 
         bool operator==(const Node &rhs) const {
-            return this == &rhs ||
-                   (parent == rhs.parent &&
-                    left == rhs.left &&
-                    right == rhs.right &&
-                    color == rhs.color &&
-                    (this->getData() != nullptr
-                     && rhs.getData() != nullptr
-                     && *(this->getData()) == *(rhs.getData())));
+            // TODO: remove trivial equality operator
+            return this == &rhs;
         }
 
         bool operator!=(const Node &rhs) const {
@@ -247,19 +242,19 @@ namespace algor::__detail_RBTree {
 
         bool isNil() const { return *this == *Nil::get(); }
 
-        const Node * search(T const& data) const {
+        const Node * search(T const& data, const Comparator<T> & comparator) const {
             const Node * current = this;
             const T * current_data;
 
             while (!current->isNil() && !(*(current_data = current->getData()) == data)) {
-                if(*current_data < data) current = current->right;
+                if(comparator.compare(*current_data, data) == LESS) current = current->right;
                 else current = current->left;
             }
 
             return current;
         }
-        Node * search(T const& data) {
-            return this->to_const()->search(data)->to_non_const();
+        Node * search(T const& data, const Comparator<T> & comparator) {
+            return this->to_const()->search(data, comparator)->to_non_const();
         }
 
         const Node * minimum() const {
@@ -322,20 +317,20 @@ namespace algor::__detail_RBTree {
             return this->to_const()->previous()->to_non_const();
         }
 
-        void insert(Node * & root) {
+        void insert(Node * & root, const Comparator<T> & comparator) {
             Node * y = Node::Nil::get();
             Node * x = root;
 
             while(!x->isNil()) {
                 y = x;
-                if(*(this->getData()) < *(x->getData())) x = x->left;
+                if(comparator.compare(*(this->getData()), *(x->getData())) == LESS) x = x->left;
                 else x = x->right;
             }
 
             this->parent = y;
 
             if(y->isNil()) root = this;
-            else if(*(this->getData()) < *(y->getData())) y->left = this;
+            else if(comparator.compare(*(this->getData()), *(y->getData())) == LESS) y->left = this;
             else y->right = this;
 
             this->left = Node::Nil::get();

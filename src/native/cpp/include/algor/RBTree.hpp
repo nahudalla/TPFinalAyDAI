@@ -8,6 +8,7 @@
 #include <algor/RBTree_impl/DataNode.hpp>
 #include <algor/RBTree_impl/Iterator.hpp>
 #include <algor/RBTree_impl/ConstIterator.hpp>
+#include <algor/Comparator.hpp>
 
 namespace algor {
     template <typename T>
@@ -16,6 +17,7 @@ namespace algor {
         typedef __detail_RBTree::DataNode<T> DataNode;
 
         Node * root = Node::Nil::get();
+        Comparator<T> comparator;
     public:
         typedef __detail_RBTree::Iterator<T> Iterator;
         typedef __detail_RBTree::ConstIterator<T> ConstIterator;
@@ -23,18 +25,23 @@ namespace algor {
         typedef __detail_RBTree::ReverseConstIterator<T> ReverseConstIterator;
 
         RBTree() = default;
+        explicit RBTree(const Comparator<T> & comparator)
+            : comparator(comparator)
+        {}
         RBTree(RBTree const& other) {*this = other;}
         RBTree(RBTree && other) noexcept {*this = std::move(other);}
         RBTree &operator=(RBTree const& other) {
             if(this != &other) {
                 this->~RBTree();
                 this->root = other.root->clone();
+                this->comparator = other.comparator;
             }
             return *this;
         }
         RBTree &operator=(RBTree && rhs) noexcept {
             if(this != &rhs) {
                 std::swap(this->root, rhs.root);
+                std::swap(this->comparator, rhs.comparator);
             }
 
             return *this;
@@ -65,15 +72,15 @@ namespace algor {
         }
 
         auto search(T const& value) const {
-            return ConstIterator(this->root->search(value));
+            return ConstIterator(this->root->search(value, this->comparator));
         }
         auto search(T const& value) {
-            return Iterator(this->root->search(value));
+            return Iterator(this->root->search(value, this->comparator));
         }
 
         auto insert(T value) {
             Node * node = new DataNode(value);
-            node->insert(this->root);
+            node->insert(this->root, this->comparator);
 
             return Iterator(node);
         }
