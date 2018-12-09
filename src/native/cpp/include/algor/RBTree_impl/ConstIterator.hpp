@@ -25,7 +25,7 @@ namespace algor::__detail_RBTree {
         ~IteratorBase() = default;
 
         bool operator==(const IteratorBase &rhs) const {
-            return *(this->node) == *(rhs.node);
+            return this->node == rhs.node;
         }
 
         bool operator!=(const IteratorBase &rhs) const {

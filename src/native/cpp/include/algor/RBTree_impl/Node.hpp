@@ -27,7 +27,7 @@ namespace algor::__detail_RBTree {
 
             if(this->parent->isNil()) {
                 root = y;
-            } else if(*this == *(this->parent->left)) {
+            } else if(this == this->parent->left) {
                 this->parent->left = y;
             } else {
                 this->parent->right = y;
@@ -49,7 +49,7 @@ namespace algor::__detail_RBTree {
 
             if(this->parent->isNil()) {
                 root = y;
-            } else if(*this == *(this->parent->left)) {
+            } else if(this == this->parent->left) {
                 this->parent->left = y;
             } else {
                 this->parent->right = y;
@@ -61,7 +61,7 @@ namespace algor::__detail_RBTree {
         void insert_fixup(Node * & root) {
             Node * z = this;
             while(z->parent->color == RED) {
-                if(*(z->parent) == *(z->parent->parent->left)) {
+                if(z->parent == z->parent->parent->left) {
                     Node * y = z->parent->parent->right;
                     if(y->color == RED) {
                         z->parent->color = BLACK;
@@ -69,7 +69,7 @@ namespace algor::__detail_RBTree {
                         z->parent->parent->color = RED;
                         z = z->parent->parent;
                     } else {
-                        if(*z == *(z->parent->right)) {
+                        if(z == z->parent->right) {
                             z = z->parent;
                             z->rotate_left(root);
                         }
@@ -85,7 +85,7 @@ namespace algor::__detail_RBTree {
                         z->parent->parent->color = RED;
                         z = z->parent->parent;
                     } else {
-                        if(*z == *(z->parent->left)) {
+                        if(z == z->parent->left) {
                             z = z->parent;
                             z->rotate_right(root);
                         }
@@ -101,7 +101,7 @@ namespace algor::__detail_RBTree {
         void transplant_to(Node * & root, Node * to) {
             if(to->parent->isNil()) {
                 root = this;
-            } else if(*to == *(to->parent->left)) {
+            } else if(to == to->parent->left) {
                 to->parent->left = this;
             } else to->parent->right = this;
 
@@ -109,8 +109,8 @@ namespace algor::__detail_RBTree {
         }
         void remove_fixup(Node * & root) {
             Node * x = this;
-            while(*x != *root && x->color == BLACK) {
-                if(*x == *(x->parent->left)) {
+            while(x != root && x->color == BLACK) {
+                if(x == x->parent->left) {
                     Node * w = x->parent->right;
                     if(w->color == RED) {
                         w->color = BLACK;
@@ -231,16 +231,7 @@ namespace algor::__detail_RBTree {
         void setParent(Node *parent) { this->parent = parent; }
         void setColor(Color color) { this->color = color; }
 
-        bool operator==(const Node &rhs) const {
-            // TODO: remove trivial equality operator
-            return this == &rhs;
-        }
-
-        bool operator!=(const Node &rhs) const {
-            return !(rhs == *this);
-        }
-
-        bool isNil() const { return *this == *Nil::get(); }
+        bool isNil() const { return this == Nil::get(); }
 
         const Node * search(T const& data, const Comparator<T> & comparator) const {
             const Node * current = this;
@@ -287,7 +278,7 @@ namespace algor::__detail_RBTree {
             const Node * current = this;
             const Node * successor = this->parent;
 
-            while (!successor->isNil() && *current == *(successor->right)) {
+            while (!successor->isNil() && current == successor->right) {
                 current = successor;
                 successor = successor->parent;
             }
@@ -306,7 +297,7 @@ namespace algor::__detail_RBTree {
             const Node * current = this;
             const Node * predecessor = this->parent;
 
-            while (!predecessor->isNil() && *current == *(predecessor->left)) {
+            while (!predecessor->isNil() && current == predecessor->left) {
                 current = predecessor;
                 predecessor = predecessor->parent;
             }
@@ -356,7 +347,7 @@ namespace algor::__detail_RBTree {
                 y = z->right->minimum();
                 y_original_color = y->color;
                 x = y->right;
-                if(*(y->parent) == *z) {
+                if(y->parent == z) {
                     x->parent = y;
                 } else {
                     y->right->transplant_to(root, y);
