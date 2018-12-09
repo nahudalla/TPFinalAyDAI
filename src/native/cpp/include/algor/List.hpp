@@ -7,6 +7,8 @@
 
 #include <algor/Comparator.hpp>
 
+#include <functional>
+
 
 namespace algor {
     template<typename T>
@@ -223,6 +225,41 @@ namespace algor {
             auto b = this->begin();
             auto e = this->end();
             this->merge_sort(cmp, b, e);
+        }
+
+        auto findMinimum(Comparator<T> const& cmp = Comparator<T>()) const {
+            auto min = this->begin();
+            auto it = min; ++it;
+            auto end = this->end();
+
+            for(;it != end; ++it) {
+                if(cmp.compare(*it, *min) == LESS) {
+                    min = it;
+                }
+            }
+
+            return min;
+        }
+        auto findMinimum(Comparator<T> const& cmp = Comparator<T>()) {
+            return Iterator(const_cast<const List *>(this)->findMinimum(cmp));
+        }
+
+        void removeIf(std::function<bool(const Iterator&, const Iterator&)> const& condition) {
+            auto it_prev = this->end();
+            auto it = this->begin();
+            auto end = this->end();
+
+            for(; it != end; ++it) {
+                if(condition(it, end)) this->remove(it);
+
+                if(it_prev == end) {
+                    it_prev = this->begin();
+                    it = it_prev;
+                } else {
+                    it_prev++;
+                    it = it_prev;
+                }
+            }
         }
     };
 }
