@@ -49,6 +49,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
+        src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
