@@ -28,7 +28,7 @@ namespace algor {
             auto a = a_begin;
 
             while(a != b && b != end) {
-                if(cmp.compare(*a, *b) > 0) {
+                if(cmp.compare(*a, *b) == Comparator<T>::Result::GREATER) {
                     // Incremento b antes de modificarlo para no perder el siguiente
                     auto b_next = b; b_next.next();
 
