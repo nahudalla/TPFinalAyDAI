@@ -18,6 +18,13 @@ namespace algor::__detail__List {
 
         Iterator(Node *prev, Node *curr) : Base(prev, curr) {}
 
+        template <typename TNode, typename = std::enable_if_t<std::is_same_v<std::remove_const_t<TNode>, Node>>>
+        explicit Iterator(ConstIterator<T, TNode> const& other) : Base(other)
+        {}
+        template <typename TNode, typename = std::enable_if_t<std::is_same_v<std::remove_const_t<TNode>, Node>>>
+        explicit Iterator(ConstIterator<T, TNode> && other) : Base(std::move(other))
+        {}
+
         friend class List<T>;
 
     public:
@@ -28,8 +35,6 @@ namespace algor::__detail__List {
         Iterator &operator=(Iterator const &) = default;
         Iterator &operator=(Iterator &&) noexcept = default;
         ~Iterator() = default;
-
-        explicit Iterator(const Base & other) : Base(other) {}
 
         Iterator &next() {
             Base::next();

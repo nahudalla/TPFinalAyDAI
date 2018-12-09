@@ -19,7 +19,22 @@ namespace algor::__detail__List {
 
         ConstIterator(Node *prev, Node *curr) : prev(prev), curr(curr) {}
 
+        template <typename TNode, typename = std::enable_if_t<std::is_same_v<std::remove_const_t<Node>, std::remove_const_t<TNode>>>>
+        explicit ConstIterator(ConstIterator<T, TNode> const& other) {
+            this->prev = const_cast<Node>(other.prev);
+            this->curr = const_cast<Node>(other.curr);
+        }
+
+        template <typename TNode, typename = std::enable_if_t<std::is_same_v<std::remove_const_t<Node>, std::remove_const_t<TNode>>>>
+        explicit ConstIterator(ConstIterator<T, TNode> && other) {
+            this->prev = const_cast<Node * &&>(std::move(other.prev));
+            this->curr = const_cast<Node * &&>(std::move(other.curr));
+        }
+
         friend class List<T>;
+
+        friend class ConstIterator<T, std::remove_const_t<Node>>;
+        friend class ConstIterator<T, const Node>;
 
     public:
         ConstIterator() = default;
