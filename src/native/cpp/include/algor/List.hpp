@@ -133,9 +133,9 @@ namespace algor {
             this->last = nullptr;
         }
 
-        void add(const T &elem) {
+        void add(T elem) {
             // Creo un nuevo nodo
-            Node * node = new Node{elem, nullptr};
+            auto * node = new Node{std::move(elem), nullptr};
 
             // Si no hay último elemento, la lista está vacía
             if (this->last == nullptr) {
@@ -178,15 +178,19 @@ namespace algor {
         }
         auto cend() const { return this->end(); }
 
-        void remove(Iterator const& it) {
+        T remove(Iterator const& it) {
             auto next = it.curr->next;
 
             if (it.prev != nullptr) it.prev->next = next;
+
+            T elem = std::move(it.curr->elem);
 
             delete it.curr;
 
             if (this->first == it.curr) this->first = next;
             if (this->last == it.curr) this->last = it.prev;
+
+            return std::move(elem);
         }
 
         bool isEmpty() const {
