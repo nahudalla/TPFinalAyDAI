@@ -1,8 +1,9 @@
-#ifndef TPFINALAYDAI_SEGMENT_HPP
-#define TPFINALAYDAI_SEGMENT_HPP
+#ifndef TPFINALAYDAI_ALGOR_SEGMENT_HPP
+#define TPFINALAYDAI_ALGOR_SEGMENT_HPP
 
 #include <algor/Point.hpp>
 #include <algor/Vector.hpp>
+#include <algor/ComparisonResult.hpp>
 
 namespace algor {
     class Segment {
@@ -77,7 +78,76 @@ namespace algor {
                    && std::min(this->from.getY(), this->to.getY()) <= point.getY()
                    && point.getY() <= std::max(this->from.getY(), this->to.getY());
         }
+
+        const Point & getLeftmostEndpoint() const {
+            if(this->from.getX() < this->to.getX()) {
+                return this->from;
+            } else {
+                return this->to;
+            }
+        }
+
+        const Point & getRightmostEndpoint() const {
+            if(this->from.getX() > this->to.getX()) {
+                return this->from;
+            } else {
+                return this->to;
+            }
+        }
+
+        ComparisonResult comparePointWithIntersection(const Segment & other, const Point & point) const {
+            // PRECONDICION: los segmentos se intersecan
+            auto x1 = this->getFrom().getX(),
+                 x2 = this->getTo().getX(),
+                 x3 = other.getFrom().getX(),
+                 x4 = other.getTo().getX();
+            auto y1 = this->getFrom().getY(),
+                 y2 = this->getTo().getY(),
+                 y3 = other.getFrom().getY(),
+                 y4 = other.getTo().getY();
+            auto x0 = point.getX();
+
+            auto lhs = (x4-x3)*(y2-y1)*x1-(x2-x1)*(y4-y3)*x3+(x2-x1)*(x4-x3)*(y3-y1);
+            auto rhs = (x4-x3)*(y2-y1)*x0-(x2-x1)*(y4-y3)*x0;
+
+            return (lhs < rhs) ? LESS : ((lhs == rhs) ? EQUAL : GREATER);
+        }
+
+        bool isBelowAtPoint(const Segment & other, const Point & point) const {
+            if(this->intersects(other)) {
+                auto pointIs = this->comparePointWithIntersection(other, point);
+
+                if(pointIs == EQUAL) return true; // Estan a la misma altura, se consideran ambos arriba y abajo del otro
+
+                if(pointIs == LESS) {
+                    return this->getLeftmostEndpoint().getY() < other.getLeftmostEndpoint().getY();
+                } else { // pointIs == GREATER
+                    return this->getRightmostEndpoint().getY() < other.getRightmostEndpoint().getY();
+                }
+            } else {
+                if(this->getLeftmostEndpoint().getX() < other.getLeftmostEndpoint().getX()) {
+                    Vector v1(this->getLeftmostEndpoint(), this->getRightmostEndpoint());
+                    Vector v2(this->getLeftmostEndpoint(), other.getLeftmostEndpoint());
+
+                    return v1.isCounterClockwise(v2);
+                } else {
+                    Vector v1(other.getLeftmostEndpoint(), other.getRightmostEndpoint());
+                    Vector v2(other.getLeftmostEndpoint(), this->getLeftmostEndpoint());
+
+                    return v1.isClockwise(v2);
+                }
+            }
+        }
+
+        bool operator==(const Segment &rhs) const {
+            return from == rhs.from &&
+                   to == rhs.to;
+        }
+
+        bool operator!=(const Segment &rhs) const {
+            return !(rhs == *this);
+        }
     };
 }
 
-#endif //TPFINALAYDAI_SEGMENT_HPP
+#endif //TPFINALAYDAI_ALGOR_SEGMENT_HPP

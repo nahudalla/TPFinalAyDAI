@@ -16,9 +16,10 @@ bool list_modify_element(); ADD_TEST(LIST_MODIFY_ELEMENT, list_modify_element);
 bool list_remove_element(); ADD_TEST(LIST_REMOVE_ELEMENT, list_remove_element);
 bool list_swap(); ADD_TEST(LIST_SWAP, list_swap);
 bool list_sort(); ADD_TEST(LIST_SORT, list_sort);
+bool list_copy(); ADD_TEST(LIST_COPY, list_copy);
 
 List<int> create_list(int cant);
-bool is_ordered(List<int> & list);
+bool is_complete_and_ordered(List<int> &list, int cant);
 
 bool list_create() {
     for (int i = 0; i < 10; ++i) {
@@ -55,10 +56,21 @@ bool list_iterator() {
         auto list = create_list(i);
 
         auto it = list.begin();
+        auto it_const = list.cbegin();
 
         for (int j = 0; j < i; ++j) {
             if(!it.isDereferentiable() || *it != j) return false;
-            it.next();
+
+            if(j%3 == 0) {
+                it.next();
+                it_const.next();
+            } else if(j%2 == 0) {
+                it++;
+                it_const++;
+            } else {
+                ++it;
+                ++it_const;
+            }
         }
 
         if(it.isDereferentiable()) return false;
@@ -167,7 +179,7 @@ bool list_remove_element() {
 
                 list.remove(it);
 
-                if(it2 != it) return false;
+                it = it2;
             } else it.next();
         }
 
@@ -189,19 +201,23 @@ bool list_swap() {
         auto list = create_list(i);
         auto it = list.begin();
         auto end = list.end();
+        auto it_prev = end;
 
         while(it != end) {
-            auto it2 = it;
+            auto next = it; next.next();
+            list.swap(it, next);
 
-            it2.next();
+            if(it_prev == end) {
+                it_prev = list.begin().next();
+            } else {
+                it_prev.next().next();
+            }
 
-            if(it2) list.swap(it, it2);
-
-            it.next(); it.next();
+            it = it_prev; it.next();
         }
 
         it = list.begin();
-        for (int j = 0; j < i-1; ++j, it.next()) {
+        for (int j = 0; j < (i%2==0?i:i-1); ++j, it.next()) {
             if(j%2 == 0) {
                 if(*it != j+1) return false;
             } else {
@@ -237,12 +253,68 @@ bool list_sort() {
             }
 
             // Second, make sure that it is really shuffled
-        }while(is_ordered(list));
+        }while(is_complete_and_ordered(list, i));
 
         // Third, sort the list
         list.sort();
 
-        if(!is_ordered(list)) return false;
+        if(!is_complete_and_ordered(list, i)) return false;
+    }
+
+    return true;
+}
+
+bool list_copy() {
+    {
+        auto list = create_list(0);
+        auto copy = list;
+
+        copy.add(1);
+
+        if(copy.length() != 1 || list.length() != 0) {
+            return false;
+        }
+    }
+
+    {
+        auto list = create_list(1);
+        auto copy = list;
+        const auto NUMBER = 77777;
+
+        *(copy.begin()) = NUMBER;
+
+        if(*(copy.begin()) != NUMBER || *(list.begin()) == NUMBER) {
+            return false;
+        }
+    }
+
+    for (int i = 2; i < 10; ++i) {
+        auto list = create_list(i);
+        auto copy = list;
+
+        auto it = copy.begin();
+        auto end = copy.end();
+        auto it_prev = end;
+        while(it != end) {
+            if(*it%2 == 0) {
+                copy.remove(it);
+            }
+
+            if(it_prev == end) {
+                it_prev = copy.begin();
+            } else {
+                ++it_prev;
+            }
+
+            it = it_prev;
+            ++it;
+        }
+
+        if(is_complete_and_ordered(copy, i) ||
+            !is_complete_and_ordered(list, i))
+        {
+            return false;
+        }
     }
 
     return true;
@@ -255,10 +327,10 @@ List<int> create_list(int cant) {
         list.add(i);
     }
 
-    return list;
+    return std::move(list);
 }
 
-bool is_ordered(List<int> & list) {
+bool is_complete_and_ordered(List<int> &list, int cant) {
     auto it = list.begin();
     auto end = list.end();
     int i = 0;
@@ -269,5 +341,5 @@ bool is_ordered(List<int> & list) {
         i++;
     }
 
-    return true;
+    return i == cant;
 }

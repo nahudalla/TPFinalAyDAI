@@ -1,11 +1,13 @@
-#ifndef TPFINALAYDAI_VECTOR_HPP
-#define TPFINALAYDAI_VECTOR_HPP
+#ifndef TPFINALAYDAI_ALGOR_VECTOR_HPP
+#define TPFINALAYDAI_ALGOR_VECTOR_HPP
 
 #include <algor/Point.hpp>
 
 namespace algor {
     class Vector : public Point {
     public:
+        Vector() = default;
+
         Vector(int x, int y) : Point(x, y) {}
 
         explicit Vector(Point &&point) : Point(point) {}
@@ -44,4 +46,4 @@ namespace algor {
 
 algor::Vector operator-(algor::Point const& lhs, algor::Point const& rhs);
 
-#endif //TPFINALAYDAI_VECTOR_HPP
+#endif //TPFINALAYDAI_ALGOR_VECTOR_HPP

@@ -1,11 +1,13 @@
-#ifndef TPFINALAYDAI_POINT_HPP
-#define TPFINALAYDAI_POINT_HPP
+#ifndef TPFINALAYDAI_ALGOR_POINT_HPP
+#define TPFINALAYDAI_ALGOR_POINT_HPP
 
 namespace algor {
     class Point {
-        int x, y;
+        int x = 0, y = 0;
 
     public:
+        Point() = default;
+
         Point(int x, int y) : x(x), y(y) {}
 
         Point(Point const &) = default;
@@ -37,4 +39,4 @@ namespace algor {
     };
 }
 
-#endif //TPFINALAYDAI_POINT_HPP
+#endif //TPFINALAYDAI_ALGOR_POINT_HPP
