@@ -73,6 +73,10 @@ namespace algor::__detail_RBTree {
             return *(this->node->getData());
         }
 
+        const T *operator->() const {
+            return this->node->getData();
+        }
+
         ConstIterator &next() {
             if constexpr (!reverse) {
                 this->next_impl();

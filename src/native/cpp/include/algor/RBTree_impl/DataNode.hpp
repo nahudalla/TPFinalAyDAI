@@ -12,9 +12,9 @@ namespace algor::__detail_RBTree {
         T data;
 
     public:
-        explicit DataNode(T data) {
-            this->data = std::move(data);
-        }
+        explicit DataNode(T data)
+            : data(std::move(data))
+        {}
 
         DataNode(T data, Node<T> * parent, Node<T> * left, Node<T> * right, Color color)
                 : Node<T>(parent, left, right, color), DataNode(std::move(data))

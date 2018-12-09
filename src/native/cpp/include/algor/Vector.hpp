@@ -6,6 +6,8 @@
 namespace algor {
     class Vector : public Point {
     public:
+        Vector() = default;
+
         Vector(int x, int y) : Point(x, y) {}
 
         explicit Vector(Point &&point) : Point(point) {}

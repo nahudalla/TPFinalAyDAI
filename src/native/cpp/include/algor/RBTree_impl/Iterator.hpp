@@ -35,6 +35,10 @@ namespace algor::__detail_RBTree {
             return *(this->node->getData());
         }
 
+        T *operator->()  {
+            return this->node->getData();
+        }
+
         Iterator &next() {
             Base::next();
             return *this;

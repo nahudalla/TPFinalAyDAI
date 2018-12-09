@@ -63,6 +63,10 @@ namespace algor::__detail__List {
             return this->curr->elem;
         }
 
+        const T *operator->() const {
+            return &(this->curr->elem);
+        }
+
         bool operator==(const ConstIterator &rhs) const {
             return this->curr == rhs.curr;
         }

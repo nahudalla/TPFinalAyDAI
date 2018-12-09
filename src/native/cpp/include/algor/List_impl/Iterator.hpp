@@ -51,6 +51,9 @@ namespace algor::__detail__List {
             return this->curr->elem;
         }
 
+        T *operator->() {
+            return &(this->curr->elem);
+        }
     };
 }
 
