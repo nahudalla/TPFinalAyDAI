@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_VECTOR_HPP
-#define TPFINALAYDAI_VECTOR_HPP
+#ifndef TPFINALAYDAI_ALGOR_VECTOR_HPP
+#define TPFINALAYDAI_ALGOR_VECTOR_HPP
 
 #include <algor/Point.hpp>
 
@@ -44,4 +44,4 @@ namespace algor {
 
 algor::Vector operator-(algor::Point const& lhs, algor::Point const& rhs);
 
-#endif //TPFINALAYDAI_VECTOR_HPP
+#endif //TPFINALAYDAI_ALGOR_VECTOR_HPP

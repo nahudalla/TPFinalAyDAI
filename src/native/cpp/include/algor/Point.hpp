@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_POINT_HPP
-#define TPFINALAYDAI_POINT_HPP
+#ifndef TPFINALAYDAI_ALGOR_POINT_HPP
+#define TPFINALAYDAI_ALGOR_POINT_HPP
 
 namespace algor {
     class Point {
@@ -37,4 +37,4 @@ namespace algor {
     };
 }
 
-#endif //TPFINALAYDAI_POINT_HPP
+#endif //TPFINALAYDAI_ALGOR_POINT_HPP

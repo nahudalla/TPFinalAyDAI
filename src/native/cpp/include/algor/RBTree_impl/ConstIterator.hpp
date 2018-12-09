@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_CONSTITERATOR_HPP
-#define TPFINALAYDAI_CONSTITERATOR_HPP
+#ifndef TPFINALAYDAI_RBTREE_IMPL_CONSTITERATOR_HPP
+#define TPFINALAYDAI_RBTREE_IMPL_CONSTITERATOR_HPP
 
 #include <algor/RBTree_impl/Node.hpp>
 
@@ -118,4 +118,4 @@ namespace algor::__detail_RBTree {
     using ReverseConstIterator = ConstIterator<T, Node, true>;
 }
 
-#endif //TPFINALAYDAI_CONSTITERATOR_HPP
+#endif //TPFINALAYDAI_RBTREE_IMPL_CONSTITERATOR_HPP

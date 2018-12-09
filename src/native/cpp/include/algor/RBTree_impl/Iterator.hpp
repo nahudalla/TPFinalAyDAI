@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_ITERATOR_HPP
-#define TPFINALAYDAI_ITERATOR_HPP
+#ifndef TPFINALAYDAI_RBTREE_IMPL_ITERATOR_HPP
+#define TPFINALAYDAI_RBTREE_IMPL_ITERATOR_HPP
 
 #include <algor/RBTree_impl/Node.hpp>
 #include <algor/RBTree_impl/ConstIterator.hpp>
@@ -70,4 +70,4 @@ namespace algor::__detail_RBTree {
     using ReverseIterator = Iterator<T, true>;
 }
 
-#endif //TPFINALAYDAI_ITERATOR_HPP
+#endif //TPFINALAYDAI_RBTREE_IMPL_ITERATOR_HPP

@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_LIST_HPP
-#define TPFINALAYDAI_LIST_HPP
+#ifndef TPFINALAYDAI_ALGOR_LIST_HPP
+#define TPFINALAYDAI_ALGOR_LIST_HPP
 
 #include <algor/List_impl/Node.hpp>
 #include <algor/List_impl/ConstIterator.hpp>
@@ -223,4 +223,4 @@ namespace algor {
     };
 }
 
-#endif //TPFINALAYDAI_LIST_HPP
+#endif //TPFINALAYDAI_ALGOR_LIST_HPP

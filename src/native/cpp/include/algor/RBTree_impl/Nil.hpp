@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_NIL_HPP
-#define TPFINALAYDAI_NIL_HPP
+#ifndef TPFINALAYDAI_RBTREE_IMPL_NIL_HPP
+#define TPFINALAYDAI_RBTREE_IMPL_NIL_HPP
 
 #include <algor/RBTree_impl/Color.hpp>
 #include <algor/RBTree_impl/Node.hpp>
@@ -30,4 +30,4 @@ namespace algor::__detail_RBTree {
     };
 }
 
-#endif //TPFINALAYDAI_NIL_HPP
+#endif //TPFINALAYDAI_RBTREE_IMPL_NIL_HPP

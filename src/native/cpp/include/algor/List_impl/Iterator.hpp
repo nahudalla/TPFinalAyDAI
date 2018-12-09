@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_ITERATOR_HPP
-#define TPFINALAYDAI_ITERATOR_HPP
+#ifndef TPFINALAYDAI_LSIT_IMPL_ITERATOR_HPP
+#define TPFINALAYDAI_LSIT_IMPL_ITERATOR_HPP
 
 #include <algorithm>
 
@@ -54,4 +54,4 @@ namespace algor::__detail__List {
     };
 }
 
-#endif //TPFINALAYDAI_ITERATOR_HPP
+#endif //TPFINALAYDAI_LSIT_IMPL_ITERATOR_HPP

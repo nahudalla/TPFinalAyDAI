@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_NODE_HPP
-#define TPFINALAYDAI_NODE_HPP
+#ifndef TPFINALAYDAI_RBTREE_IMPL_NODE_HPP
+#define TPFINALAYDAI_RBTREE_IMPL_NODE_HPP
 
 #include <algorithm>
 
@@ -382,4 +382,4 @@ namespace algor::__detail_RBTree {
 
 #include <algor/RBTree_impl/Nil.hpp>
 
-#endif //TPFINALAYDAI_NODE_HPP
+#endif //TPFINALAYDAI_RBTREE_IMPL_NODE_HPP

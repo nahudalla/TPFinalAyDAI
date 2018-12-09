@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_NODE_HPP
-#define TPFINALAYDAI_NODE_HPP
+#ifndef TPFINALAYDAI_LIST_IMPL_NODE_HPP
+#define TPFINALAYDAI_LIST_IMPL_NODE_HPP
 
 namespace algor::__detail__List {
     template <typename T>
@@ -21,4 +21,4 @@ namespace algor::__detail__List {
     };
 }
 
-#endif //TPFINALAYDAI_NODE_HPP
+#endif //TPFINALAYDAI_LIST_IMPL_NODE_HPP

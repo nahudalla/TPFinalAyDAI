@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_RBTREE_HPP
-#define TPFINALAYDAI_RBTREE_HPP
+#ifndef TPFINALAYDAI_ALGOR_RBTREE_HPP
+#define TPFINALAYDAI_ALGOR_RBTREE_HPP
 
 #include <algorithm>
 
@@ -111,4 +111,4 @@ namespace algor {
     };
 }
 
-#endif //TPFINALAYDAI_RBTREE_HPP
+#endif //TPFINALAYDAI_ALGOR_RBTREE_HPP

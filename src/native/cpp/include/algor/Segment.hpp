@@ -1,5 +1,5 @@
-#ifndef TPFINALAYDAI_SEGMENT_HPP
-#define TPFINALAYDAI_SEGMENT_HPP
+#ifndef TPFINALAYDAI_ALGOR_SEGMENT_HPP
+#define TPFINALAYDAI_ALGOR_SEGMENT_HPP
 
 #include <algor/Point.hpp>
 #include <algor/Vector.hpp>
@@ -80,4 +80,4 @@ namespace algor {
     };
 }
 
-#endif //TPFINALAYDAI_SEGMENT_HPP
+#endif //TPFINALAYDAI_ALGOR_SEGMENT_HPP
