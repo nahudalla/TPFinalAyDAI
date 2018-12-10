@@ -2,6 +2,8 @@
 #define TPFINALAYDAI_ALGOR_VECTOR_HPP
 
 #include <algor/Point.hpp>
+#include <cstddef>
+#include <cmath>
 
 namespace algor {
     class Vector : public Point {
@@ -40,6 +42,10 @@ namespace algor {
 
         bool isCounterClockwise(Vector const &rhs) const {
             return rhs.crossProduct(*this) < 0;
+        }
+
+        auto squaredLength() {
+            return (std::size_t) this->getX()*this->getX() + this->getY()*this->getY();
         }
     };
 }
