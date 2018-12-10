@@ -4,6 +4,7 @@
 #include <algor/Stack.hpp>
 #include <algor/Point.hpp>
 #include <algor/GrahamScan.hpp>
+#include <algor/JarvisMarch.hpp>
 
 #include <sstream>
 
@@ -11,15 +12,18 @@ using namespace algor;
 
 bool graham_scan_instantiate(); ADD_TEST(GRAHAM_SCAN_INSTANTIATE, graham_scan_instantiate);
 bool graham_scan_algorithm(); ADD_TEST(GRAHAM_SCAN_ALGORITHM, graham_scan_algorithm);
+bool jarvis_march_instantiate(); ADD_TEST(JARVIS_MARCH_INSTANTIATE, jarvis_march_instantiate);
+bool jarvis_march_algorithm(); ADD_TEST(JARVIS_MARCH_ALGORITHM, jarvis_march_algorithm);
 
 std::stringstream get_test_points_string();
 std::stringstream  get_solution_points_string();
 List<Point> generate_test_points_list();
 Stack<Point> generate_solution_points_stack();
 
-bool graham_scan_instantiate() {
+template <typename T>
+bool instantiation_test() {
     for (int i = 0; i < 0; ++i) {
-        GrahamScan gs(generate_test_points_list());
+        T gs(generate_test_points_list());
 
         if(!gs.canRun() || gs.hasResult()) return false;
     }
@@ -27,9 +31,10 @@ bool graham_scan_instantiate() {
     return true;
 }
 
-bool graham_scan_algorithm() {
+template <typename T>
+bool algorithm_test() {
     for (int i = 0; i < 1; ++i) {
-        GrahamScan gs(generate_test_points_list());
+        T gs(generate_test_points_list());
 
         auto res = gs.run();
 
@@ -43,6 +48,22 @@ bool graham_scan_algorithm() {
     }
 
     return true;
+}
+
+bool graham_scan_instantiate() {
+    return instantiation_test<GrahamScan>();
+}
+
+bool graham_scan_algorithm() {
+    return algorithm_test<GrahamScan>();
+}
+
+bool jarvis_march_instantiate() {
+    return instantiation_test<JarvisMarch>();
+}
+
+bool jarvis_march_algorithm() {
+    return algorithm_test<JarvisMarch>();
 }
 
 List<Point> generate_test_points_list() {
