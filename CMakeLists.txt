@@ -44,6 +44,7 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/Stack.hpp
         src/native/cpp/include/algor/GrahamScan.hpp
         src/native/cpp/include/algor/JarvisMarch.hpp
+        src/native/cpp/include/algor/Array.hpp
 )
 
 set(TESTS_FILES
@@ -55,6 +56,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
         src/native/cpp/tests/algor/Stack.cpp
         src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
+        src/native/cpp/tests/algor/Array.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
