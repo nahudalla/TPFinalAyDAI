@@ -41,6 +41,7 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/RBTree_impl/Iterator.hpp
         src/native/cpp/include/algor/AnySegmentsIntersect.hpp
         src/native/cpp/include/algor/ComparisonResult.hpp
+        src/native/cpp/include/algor/Stack.hpp
 )
 
 set(TESTS_FILES
@@ -50,6 +51,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
+        src/native/cpp/tests/algor/Stack.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
