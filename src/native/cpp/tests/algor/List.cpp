@@ -20,6 +20,7 @@ bool list_swap(); ADD_TEST(LIST_SWAP, list_swap);
 bool list_sort(); ADD_TEST(LIST_SORT, list_sort);
 bool list_copy(); ADD_TEST(LIST_COPY, list_copy);
 bool list_find_minimum(); ADD_TEST(LIST_FIND_MINIMUM, list_find_minimum);
+bool list_add_front(); ADD_TEST(LIST_ADD_FRONT, list_add_front);
 
 List<int> create_list(int cant);
 bool is_complete_and_ordered(List<int> &list, int cant);
@@ -376,6 +377,24 @@ bool list_copy() {
             !is_complete_and_ordered(list, i))
         {
             return false;
+        }
+    }
+
+    return true;
+}
+
+bool list_add_front() {
+    for (int i = 0; i < 10; ++i) {
+        List<int> l;
+
+        for (int j = i-1; j >= 0; --j) {
+            l.add_front(j);
+        }
+
+        auto it = l.begin();
+        auto end = l.end();
+        for(int j = 0; it != end; ++it, ++j) {
+            if(*it != j) return false;
         }
     }
 

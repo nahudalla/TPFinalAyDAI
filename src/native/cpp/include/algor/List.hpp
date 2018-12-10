@@ -152,6 +152,12 @@ namespace algor {
             }
         }
 
+        void add_front(T elem) {
+            this->first = new Node{std::move(elem), this->first};
+
+            if(this->last == nullptr) this->last = this->first;
+        }
+
         int length() const {
             Node * current = this->first; // Inicializo el nodo actual como el primero
             int counter = 0; // Inicializo el contador en cero
