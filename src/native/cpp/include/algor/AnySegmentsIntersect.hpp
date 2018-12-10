@@ -70,6 +70,10 @@ namespace algor {
             }
         }
 
+        std::optional<bool> run() const {
+            return this->result;
+        }
+
         std::optional<bool> run() {
             if(this->result.has_value()) {
                 return this->result;
@@ -100,7 +104,8 @@ namespace algor {
             RBTree<Segment> tree(std::move(totalOrderComparator));
             auto tree_end = tree.end();
 
-            for (; it != end; ++it) {
+            bool anySegmentsIntersect = false;
+            for (; it != end && !anySegmentsIntersect; ++it) {
                 const Endpoint & endpoint = *it;
                 if(endpoint.position == LEFT) {
                     sweepLinePoint = endpoint.segment.getLeftmostEndpoint();
@@ -110,7 +115,7 @@ namespace algor {
 
                     if((above != tree_end && it_segment->intersects(*above))
                         || (below != tree_end && it_segment->intersects(*below))) {
-                        return true;
+                        anySegmentsIntersect = true;
                     }
                 } else {
                     sweepLinePoint = endpoint.segment.getRightmostEndpoint();
@@ -119,13 +124,16 @@ namespace algor {
                     auto below = it_segment; below--;
 
                     if(above != tree_end && below != tree_end && above->intersects(*below)) {
-                        return true;
+                        anySegmentsIntersect = true;
                     }
                     tree.remove(it_segment);
                 }
             }
 
-            return false;
+            this->result = anySegmentsIntersect;
+            this->endpoints = std::nullopt;
+
+            return this->result;
         }
     };
 }
