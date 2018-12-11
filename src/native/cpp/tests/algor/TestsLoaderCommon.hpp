@@ -1,11 +1,11 @@
 #ifndef TPFINALAYDAI_TESTSLOADERCOMMON_HPP
 #define TPFINALAYDAI_TESTSLOADERCOMMON_HPP
 
-#include <test_cases/TestCasesLoader.hpp>
+#include <file_loaders/TestCasesLoader.hpp>
 
 template <typename Algorithm>
 auto * & __getLoaderPointer() {
-    static const test_cases::TestCasesLoader<Algorithm> * TESTS_LOADER = nullptr;
+    static const file_loaders::TestCasesLoader<Algorithm> * TESTS_LOADER = nullptr;
 
     return TESTS_LOADER;
 }
@@ -15,7 +15,7 @@ const auto & getTestsLoader() {
     auto * & TESTS_LOADER = __getLoaderPointer<Algorithm>();
 
     if(TESTS_LOADER == nullptr) {
-        TESTS_LOADER = new test_cases::TestCasesLoader<Algorithm>();
+        TESTS_LOADER = new file_loaders::TestCasesLoader<Algorithm>();
     }
 
     return *TESTS_LOADER;

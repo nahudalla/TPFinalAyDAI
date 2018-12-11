@@ -16,15 +16,16 @@
 #include <algor/Stack.hpp>
 #include <algor/Point.hpp>
 
-#include <test_cases/TestCasesLoader_impl/ParserShared.hpp>
+#include <file_loaders/Parser_impl/ParserShared.hpp>
 
-namespace test_cases::__detail_TestCasesLoader {
+namespace file_loaders {
     template <typename Algorithm = void>
     struct SolutionParser;
 
     template <>
     struct SolutionParser<void> {
         typedef void SolutionType;
+        typedef SolutionType ResultType;
     };
 
     template <>
@@ -32,8 +33,9 @@ namespace test_cases::__detail_TestCasesLoader {
         SolutionParser() = delete;
 
         typedef decltype(std::declval<algor::AnySegmentsIntersect>().run()) SolutionType;
+        typedef SolutionType ResultType;
 
-        static SolutionType parseSolution(std::istream & input) {
+        static SolutionType parse(std::istream &input) {
             if(!input) return std::nullopt;
 
             std::string str;
@@ -55,15 +57,16 @@ namespace test_cases::__detail_TestCasesLoader {
         SolutionParser() = delete;
 
         typedef decltype(std::declval<algor::GrahamScan>().run()) SolutionType;
+        typedef SolutionType ResultType;
 
-        static SolutionType parseSolution(std::istream & input) {
+        static SolutionType parse(std::istream &input) {
             algor::Stack<algor::Point> stack;
 
-            std::optional<algor::Point> point = parse_point(input);
+            std::optional<algor::Point> point = __detail_Parser::parse_point(input);
 
             while(point.has_value()) {
                 stack.push(*point);
-                point = parse_point(input);
+                point = __detail_Parser::parse_point(input);
             }
 
             if(!stack.isEmpty()) return std::move(stack);
@@ -76,9 +79,10 @@ namespace test_cases::__detail_TestCasesLoader {
         SolutionParser() = delete;
 
         typedef SolutionParser<algor::GrahamScan>::SolutionType SolutionType;
+        typedef SolutionType ResultType;
 
-        static SolutionType parseSolution(std::istream & input) {
-            return SolutionParser<algor::GrahamScan>::parseSolution(input);
+        static SolutionType parse(std::istream &input) {
+            return SolutionParser<algor::GrahamScan>::parse(input);
         }
     };
 
@@ -87,10 +91,11 @@ namespace test_cases::__detail_TestCasesLoader {
         SolutionParser() = delete;
 
         typedef decltype(std::declval<algor::ClosestPairOfPoints>().run()) SolutionType;
+        typedef SolutionType ResultType;
 
-        static SolutionType parseSolution(std::istream & input) {
-            auto p1 = parse_point(input),
-                 p2 = parse_point(input);
+        static SolutionType parse(std::istream &input) {
+            auto p1 = __detail_Parser::parse_point(input),
+                 p2 = __detail_Parser::parse_point(input);
 
             if(p1.has_value() && p2.has_value()) return std::make_pair(*p1, *p2);
             else return std::nullopt;

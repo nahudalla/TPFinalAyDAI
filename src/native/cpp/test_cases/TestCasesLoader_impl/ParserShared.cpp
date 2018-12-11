@@ -2,9 +2,9 @@
 #include <istream>
 #include <optional>
 
-#include <test_cases/TestCasesLoader_impl/ParserShared.hpp>
+#include <file_loaders/Parser_impl/ParserShared.hpp>
 
-namespace test_cases::__detail_TestCasesLoader {
+namespace file_loaders::__detail_Parser {
     std::optional<algor::Point> parse_point(std::istream & input) {
         if(!input) return std::nullopt;
 
