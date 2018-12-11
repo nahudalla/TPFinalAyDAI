@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <initializer_list>
 #include <algorithm>
+#include <algor/Comparator.hpp>
+#include <algor/List.hpp>
 
 namespace algor {
     template <typename T>
@@ -11,20 +13,50 @@ namespace algor {
         T * data = nullptr;
         std::size_t _size = 0;
 
-    public:
-        explicit Array(std::size_t size) : _size(size) {
+        void init(std::size_t size) {
+            this->_size = size;
             this->data = new T[size];
         }
-        Array(std::initializer_list<T> list) : Array(list.size()) {
+        void init(std::initializer_list<T> list) {
+            this->init(list.size());
             auto it = list.begin();
             auto end = list.end();
             for(std::size_t i = 0; it != end; ++it, ++i) {
                 this->data[i] = std::move(*it);
             }
         }
+    public:
+        explicit Array(std::size_t size) {this->init(size);}
+        Array(std::initializer_list<T> list) {*this=std::move(list);}
         Array &operator=(std::initializer_list<T> list) {
             this->~Array();
-            this->Array(std::move(list));
+            this->init(std::move(list));
+
+            return *this;
+        }
+
+        explicit Array(List<T> const& list) {*this = list;}
+        Array &operator=(List<T> const& list) {
+            this->~Array();
+            this->init(list.length());
+
+            auto it = list.begin();
+            auto end = list.end();
+            for(std::size_t i = 0; it != end; ++it, ++i) {
+                this->data[i] = *it;
+            }
+
+            return *this;
+        }
+
+        explicit Array(List<T> && list) {*this = std::move(list);}
+        Array &operator=(List<T> && list) {
+            this->~Array();
+            this->init(list.length());
+
+            for(std::size_t i = 0; !list.isEmpty(); ++i) {
+                this->data[i] = list.remove(list.begin());
+            }
 
             return *this;
         }
@@ -40,7 +72,7 @@ namespace algor {
         Array &operator=(Array const& other) {
             if(this != &other) {
                 this->~Array();
-                this->Array(other._size);
+                this->init(other._size);
                 for (int i = 0; i < other._size; ++i) {
                     this->data[i] = other.data[i];
                 }
@@ -67,6 +99,20 @@ namespace algor {
         }
         const T&operator[](std::size_t i) const {
             return this->data[i];
+        }
+
+        T * raw() {
+            return this->data;
+        }
+
+        const T * raw() const {
+            return this->data;
+        }
+
+        void sort(Comparator<T> cmp = Comparator<T>()) {
+            std::sort(this->data, this->data+this->_size, [&cmp](const T & lhs, const T & rhs) {
+                return cmp.getComparatorFunction()(lhs, rhs) == Comparator<T>::Result::LESS;
+            });
         }
     };
 }
