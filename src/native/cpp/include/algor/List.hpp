@@ -8,6 +8,7 @@
 #include <algor/Comparator.hpp>
 
 #include <functional>
+#include <initializer_list>
 
 namespace algor {
     template<typename T>
@@ -132,6 +133,17 @@ namespace algor {
                 delete tmp;
             }
             this->last = nullptr;
+        }
+
+        List(std::initializer_list<T> list) {*this = std::move(list);}
+        List &operator=(std::initializer_list<T> list) {
+            auto it = list.begin();
+            auto end = list.end();
+            for(; it != end; ++it) {
+                this->add(std::move(*it));
+            }
+
+            return *this;
         }
 
         void add(T elem) {
