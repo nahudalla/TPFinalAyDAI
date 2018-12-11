@@ -97,7 +97,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
+    add_executable(CLI src/native/cpp/include/third_party/CLI11.hpp ${SOURCE_FILES} src/native/cpp/cli.cpp)
 endif()
 
 add_executable(Tests
