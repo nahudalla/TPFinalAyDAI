@@ -9,7 +9,6 @@
 
 #include <functional>
 
-
 namespace algor {
     template<typename T>
     class List {
@@ -158,9 +157,9 @@ namespace algor {
             if(this->last == nullptr) this->last = this->first;
         }
 
-        int length() const {
+        std::size_t length() const {
             Node * current = this->first; // Inicializo el nodo actual como el primero
-            int counter = 0; // Inicializo el contador en cero
+            std::size_t counter = 0; // Inicializo el contador en cero
 
             while (current != nullptr) { // Mientras que haya nodo actual
                 counter++; // Aumento el contador
@@ -266,6 +265,29 @@ namespace algor {
                     it = it_prev;
                 }
             }
+        }
+
+        bool operator==(const List & rhs) {
+            if(this == &rhs) return true;
+
+            auto lhs_it = this->begin();
+            auto lhs_end = this->end();
+            auto rhs_it = rhs.begin();
+            auto rhs_end = rhs.end();
+
+            for(; lhs_it != lhs_end && rhs_it != rhs_end; ++lhs_it, ++rhs_it) {
+                if(!(*lhs_it == *rhs_it)) return false;
+            }
+
+            if(lhs_it != lhs_end || rhs_it != rhs_end) {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool operator!=(const List & rhs) {
+            return !(*this == rhs);
         }
     };
 }

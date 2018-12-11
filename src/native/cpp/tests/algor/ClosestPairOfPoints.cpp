@@ -1,20 +1,18 @@
 #include "../Test.hpp"
 
-#include <algor/List.hpp>
-#include <algor/Segment.hpp>
-#include <algor/AnySegmentsIntersect.hpp>
+#include <algor/ClosestPairOfPoints.hpp>
 
 #include "TestsLoaderCommon.hpp"
 
 using namespace algor;
 
-bool any_segments_intersect_instantiation(); ADD_TEST(ANY_SEGMENTS_INTERSECT_INSTANTIATION, any_segments_intersect_instantiation);
-bool any_segments_intersect_algorithm(); ADD_TEST(ANY_SEGMENTS_INTERSECT_ALGORITHM, any_segments_intersect_algorithm);
+bool closest_pair_of_points_instantiation(); ADD_TEST(CLOSEST_PAIR_OF_POINTS_INSTANTIATION, closest_pair_of_points_instantiation);
+bool closest_pair_of_points_algorithm(); ADD_TEST(CLOSEST_PAIR_OF_POINTS_ALGORITHM, closest_pair_of_points_algorithm);
 
-ADD_TEST(ANY_SEGMENTS_INTERSECT_CLEANUP, cleanupTestsLoader<AnySegmentsIntersect>);
+ADD_TEST(CLOSEST_PAIR_OF_POINTS_CLEANUP, cleanupTestsLoader<ClosestPairOfPoints>);
 
-bool any_segments_intersect_instantiation() {
-    const auto & lists = getTestsLoader<AnySegmentsIntersect>().getTestCases();
+bool closest_pair_of_points_instantiation() {
+    const auto & lists = getTestsLoader<ClosestPairOfPoints>().getTestCases();
 
     if(lists.isEmpty()) return false;
 
@@ -23,16 +21,16 @@ bool any_segments_intersect_instantiation() {
         auto end = lists.end();
 
         for(; it != end; ++it) {
-            AnySegmentsIntersect asi(*it);
+            ClosestPairOfPoints asi(*it);
         }
     }
 
     return true;
 }
 
-bool any_segments_intersect_algorithm() {
-    auto & tests = getTestsLoader<AnySegmentsIntersect>().getTestCases();
-    auto & solutions = getTestsLoader<AnySegmentsIntersect>().getSolutions();
+bool closest_pair_of_points_algorithm() {
+    auto & tests = getTestsLoader<ClosestPairOfPoints>().getTestCases();
+    auto & solutions = getTestsLoader<ClosestPairOfPoints>().getSolutions();
 
     if(tests.isEmpty() || solutions.isEmpty()) {
         return false;
@@ -45,7 +43,7 @@ bool any_segments_intersect_algorithm() {
         auto it_solutions_end = solutions.end();
 
         for(; it_tests != it_tests_end && it_solutions != it_solutions_end; ++it_tests, ++it_solutions) {
-            AnySegmentsIntersect asi(*it_tests);
+            ClosestPairOfPoints asi(*it_tests);
 
             auto res = asi.run();
 

@@ -19,6 +19,7 @@ endif()
 project(TPFinalAyDAI)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 include_directories(src/native/cpp/include)
 
@@ -30,7 +31,6 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/Point.hpp
         src/native/cpp/include/algor/Segment.hpp
         src/native/cpp/include/algor/Vector.hpp
-        src/native/cpp/algor/Vector.cpp
         src/native/cpp/include/algor/Comparator.hpp
         src/native/cpp/include/algor/RBTree.hpp
         src/native/cpp/include/algor/RBTree_impl/Node.hpp
@@ -43,17 +43,33 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/ComparisonResult.hpp
         src/native/cpp/include/algor/Stack.hpp
         src/native/cpp/include/algor/GrahamScan.hpp
+        src/native/cpp/include/algor/JarvisMarch.hpp
+        src/native/cpp/include/algor/Array.hpp
+        src/native/cpp/include/algor/ClosestPairOfPoints.hpp
+        src/native/cpp/include/algor/ClosestPairOfPoints_impl/algorithm.hpp
+        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionDirNames.hpp
+        src/native/cpp/include/test_cases/TestCasesLoader_impl/ParserShared.hpp
+        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionParser.hpp
+        src/native/cpp/include/test_cases/TestCasesLoader_impl/TestCaseParser.hpp
+        src/native/cpp/include/test_cases/TestCasesLoader.hpp
+
+        src/native/cpp/algor/Vector.cpp
+        src/native/cpp/algor/ClosestPairOfPoints_impl/algorithm.cpp
+        src/native/cpp/test_cases/TestCasesLoader_impl/ParserShared.cpp
 )
 
 set(TESTS_FILES
+        src/native/cpp/tests/algor/Array.cpp
         src/native/cpp/tests/algor/List.cpp
+        src/native/cpp/tests/algor/Stack.cpp
         src/native/cpp/tests/algor/Point.cpp
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
+        src/native/cpp/tests/algor/TestsLoaderCommon.hpp
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
-        src/native/cpp/tests/algor/Stack.cpp
-        src/native/cpp/tests/algor/GrahamScan.cpp
+        src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
+        src/native/cpp/tests/algor/ClosestPairOfPoints.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
@@ -91,3 +107,4 @@ add_executable(Tests
         ${TESTS_FILES}
         src/native/cpp/tests/impl/tests.cpp
 )
+target_link_libraries(Tests stdc++fs)

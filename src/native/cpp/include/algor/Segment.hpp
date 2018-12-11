@@ -139,6 +139,10 @@ namespace algor {
             }
         }
 
+        auto squaredLength() const {
+            return Vector(this->from, this->to).squaredLength();
+        }
+
         bool operator==(const Segment &rhs) const {
             return from == rhs.from &&
                    to == rhs.to;

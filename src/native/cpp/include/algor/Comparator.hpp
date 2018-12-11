@@ -46,6 +46,10 @@ namespace algor {
         Result compare(const T & lhs, const T & rhs) const {
             return this->comparatorFunction(lhs, rhs);
         }
+
+        ComparatorFunction getComparatorFunction() const {
+            return this->comparatorFunction;
+        }
     };
 }
 
