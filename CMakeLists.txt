@@ -45,6 +45,8 @@ set(SOURCE_FILES
         src/native/cpp/include/algor/GrahamScan.hpp
         src/native/cpp/include/algor/JarvisMarch.hpp
         src/native/cpp/include/algor/Array.hpp
+        src/native/cpp/include/algor/ClosestPairOfPoints.hpp
+        src/native/cpp/include/algor/ClosestPairOfPoints_impl/algorithm.hpp
         src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionDirNames.hpp
         src/native/cpp/include/test_cases/TestCasesLoader_impl/ParserShared.hpp
         src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionParser.hpp
@@ -52,6 +54,7 @@ set(SOURCE_FILES
         src/native/cpp/include/test_cases/TestCasesLoader.hpp
 
         src/native/cpp/algor/Vector.cpp
+        src/native/cpp/algor/ClosestPairOfPoints_impl/algorithm.cpp
         src/native/cpp/test_cases/TestCasesLoader_impl/ParserShared.cpp
 )
 
@@ -66,7 +69,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/TestsLoaderCommon.hpp
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
         src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
-        src/native/cpp/tests/algor/Array.cpp
+        src/native/cpp/tests/algor/ClosestPairOfPoints.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
@@ -104,3 +107,4 @@ add_executable(Tests
         ${TESTS_FILES}
         src/native/cpp/tests/impl/tests.cpp
 )
+target_link_libraries(Tests stdc++fs)
