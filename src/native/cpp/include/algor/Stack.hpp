@@ -28,6 +28,16 @@ namespace algor {
         T pop() {
             return this->remove(this->begin());
         }
+
+        bool operator==(const Stack & rhs) {
+            if(this == &rhs) return true;
+
+            return static_cast<List<T> &>(*this) == static_cast<const List<T>>(rhs);
+        }
+
+        bool operator!=(const Stack & rhs) {
+            return !(*this == rhs);
+        }
     };
 }
 
