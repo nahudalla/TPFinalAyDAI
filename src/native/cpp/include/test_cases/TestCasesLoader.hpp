@@ -22,6 +22,10 @@ namespace test_cases {
     static constexpr const char * DEFAULT_TEST_CASES_DIRECTORY = "../test_cases";
 #endif
 
+#ifdef __EMSCRIPTEN__
+    static_assert(false, "Emscripten target not supported for TestCasesLoader class!");
+#endif
+
     template <typename Algorithm>
     class TestCasesLoader {
         using TestCaseParser = __detail_TestCasesLoader::TestCaseParser<Algorithm>;
