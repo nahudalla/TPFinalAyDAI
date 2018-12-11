@@ -63,6 +63,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
+        src/native/cpp/tests/algor/TestsLoaderCommon.hpp
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
         src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
         src/native/cpp/tests/algor/Array.cpp
