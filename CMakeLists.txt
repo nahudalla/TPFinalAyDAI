@@ -24,35 +24,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 include_directories(src/native/cpp/include)
 
 set(SOURCE_FILES
-        src/native/cpp/include/algor/List.hpp
-        src/native/cpp/include/algor/List_impl/ConstIterator.hpp
-        src/native/cpp/include/algor/List_impl/Node.hpp
-        src/native/cpp/include/algor/List_impl/Iterator.hpp
-        src/native/cpp/include/algor/Point.hpp
-        src/native/cpp/include/algor/Segment.hpp
-        src/native/cpp/include/algor/Vector.hpp
-        src/native/cpp/include/algor/Comparator.hpp
-        src/native/cpp/include/algor/RBTree.hpp
-        src/native/cpp/include/algor/RBTree_impl/Node.hpp
-        src/native/cpp/include/algor/RBTree_impl/Color.hpp
-        src/native/cpp/include/algor/RBTree_impl/Nil.hpp
-        src/native/cpp/include/algor/RBTree_impl/DataNode.hpp
-        src/native/cpp/include/algor/RBTree_impl/ConstIterator.hpp
-        src/native/cpp/include/algor/RBTree_impl/Iterator.hpp
-        src/native/cpp/include/algor/AnySegmentsIntersect.hpp
-        src/native/cpp/include/algor/ComparisonResult.hpp
-        src/native/cpp/include/algor/Stack.hpp
-        src/native/cpp/include/algor/GrahamScan.hpp
-        src/native/cpp/include/algor/JarvisMarch.hpp
-        src/native/cpp/include/algor/Array.hpp
-        src/native/cpp/include/algor/ClosestPairOfPoints.hpp
-        src/native/cpp/include/algor/ClosestPairOfPoints_impl/algorithm.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionDirNames.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/ParserShared.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionParser.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/TestCaseParser.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader.hpp
-
         src/native/cpp/algor/Vector.cpp
         src/native/cpp/algor/ClosestPairOfPoints_impl/algorithm.cpp
         src/native/cpp/test_cases/TestCasesLoader_impl/ParserShared.cpp
@@ -66,7 +37,7 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
-        src/native/cpp/tests/algor/TestsLoaderCommon.hpp
+
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
         src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
         src/native/cpp/tests/algor/ClosestPairOfPoints.cpp
@@ -97,11 +68,10 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI src/native/cpp/include/third_party/CLI11.hpp ${SOURCE_FILES} src/native/cpp/cli.cpp)
+    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
 endif()
 
 add_executable(Tests
-        src/native/cpp/tests/Test.hpp
         src/native/cpp/tests/impl/tests_init.cpp
         ${SOURCE_FILES}
         ${TESTS_FILES}
