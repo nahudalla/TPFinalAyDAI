@@ -56,6 +56,7 @@ set(SOURCE_FILES
 )
 
 set(TESTS_FILES
+        src/native/cpp/tests/algor/Array.cpp
         src/native/cpp/tests/algor/List.cpp
         src/native/cpp/tests/algor/Stack.cpp
         src/native/cpp/tests/algor/Point.cpp
