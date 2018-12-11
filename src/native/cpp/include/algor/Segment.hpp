@@ -1,6 +1,8 @@
 #ifndef TPFINALAYDAI_ALGOR_SEGMENT_HPP
 #define TPFINALAYDAI_ALGOR_SEGMENT_HPP
 
+#include <algorithm>
+
 #include <algor/Point.hpp>
 #include <algor/Vector.hpp>
 #include <algor/ComparisonResult.hpp>

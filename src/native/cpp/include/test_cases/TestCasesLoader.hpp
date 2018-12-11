@@ -16,7 +16,7 @@
 namespace fs = std::experimental::filesystem;
 
 namespace test_cases {
-#ifndef DEBUG
+#if !defined DEBUG && !defined NDEBUG
     static constexpr const char * DEFAULT_TEST_CASES_DIRECTORY = "./test_cases";
 #else
     static constexpr const char * DEFAULT_TEST_CASES_DIRECTORY = "../test_cases";
