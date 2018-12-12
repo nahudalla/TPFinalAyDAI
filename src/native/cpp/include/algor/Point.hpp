@@ -6,11 +6,22 @@
 #include <utility>
 #endif
 
+#include <algor/GeometricObject.hpp>
+
 namespace algor {
-    class Point {
+    class Point : public GeometricObject {
         int x = 0, y = 0;
 
+    protected:
+        const Point *getAsPoint() const override {return this;}
+
     public:
+        GeometricObject * clone() const override {
+            return dynamic_cast<GeometricObject *>(new Point(*this));
+        }
+
+        bool isPoint() const override {return true;}
+
         Point() = default;
 
         Point(int x, int y) : x(x), y(y) {}

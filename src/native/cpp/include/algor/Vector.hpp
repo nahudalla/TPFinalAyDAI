@@ -5,9 +5,21 @@
 #include <cstddef>
 #include <cmath>
 
+#include <algor/GeometricObject.hpp>
+
 namespace algor {
     class Vector : public Point {
+    protected:
+        const Vector *getAsVector() const override {return this;}
+
     public:
+        GeometricObject *clone() const override {
+            return dynamic_cast<GeometricObject *>(new Vector(*this));
+        }
+
+        bool isPoint() const override {return false;}
+        bool isVector() const override {return true;}
+
         Vector() = default;
 
         Vector(int x, int y) : Point(x, y) {}
