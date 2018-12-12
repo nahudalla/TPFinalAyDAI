@@ -3,6 +3,10 @@
 
 #include <algor/List.hpp>
 
+#ifndef __EMSCRIPTEN__
+#include <iostream>
+#endif
+
 namespace algor {
     template <typename T>
     class Stack : private List<T> {
@@ -38,6 +42,20 @@ namespace algor {
         bool operator!=(const Stack & rhs) {
             return !(*this == rhs);
         }
+
+#ifndef __EMSCRIPTEN__
+        friend std::ostream &operator<<(std::ostream & out, Stack const& stack) {
+            Stack reversed;
+
+            auto it = stack.list.begin();
+            auto end = stack.list.end();
+            for(; it!=end; ++it) {
+                reversed.push(*it);
+            }
+
+            return out << reversed.list;
+        }
+#endif
     };
 }
 

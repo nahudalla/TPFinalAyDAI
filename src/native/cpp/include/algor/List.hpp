@@ -10,6 +10,10 @@
 #include <functional>
 #include <initializer_list>
 
+#ifndef __EMSCRIPTEN__
+#include <ostream>
+#endif
+
 namespace algor {
     template<typename T>
     class List {
@@ -301,6 +305,21 @@ namespace algor {
         bool operator!=(const List & rhs) {
             return !(*this == rhs);
         }
+
+#ifndef __EMSCRIPTEN__
+        friend std::ostream &operator<<(std::ostream & out, List const& list) {
+            auto it = list.begin();
+            auto end = list.end();
+            auto first = list.begin();
+
+            for(; it != end; ++it) {
+                if(it != first) out << std::endl;
+                out << *it;
+            }
+
+            return out;
+        }
+#endif
     };
 }
 
