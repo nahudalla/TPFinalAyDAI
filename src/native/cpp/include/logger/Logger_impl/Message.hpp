@@ -4,8 +4,11 @@
 #include <string>
 #include <optional>
 #include <algor/List.hpp>
-#include <algor/GeometricObject.hpp>
 #include <logger/Logger_impl/LogTypes.hpp>
+
+namespace algor {
+    class GeometricObject;
+}
 
 namespace logger {
     class Logger;
@@ -46,19 +49,7 @@ namespace logger::__detail_Logger {
             this->attached_objects = std::move(attachedObjects);
         }
 
-        void free_memory() {
-            delete this->message;
-            this->message = nullptr;
-
-            if(this->attached_objects.has_value()) {
-                while(!this->attached_objects->isEmpty()) {
-                    delete this->attached_objects->remove(
-                            this->attached_objects->begin()
-                    );
-                }
-                this->attached_objects = std::nullopt;
-            }
-        }
+        void free_memory();
 
     public:
         virtual ~Message() = default;
@@ -81,22 +72,7 @@ namespace logger::__detail_Logger {
     };
 
     class OwnerMessage : public Message {
-        explicit OwnerMessage(Message const& message) {
-            this->setMessage(new std::string(message.getMessage()));
-            this->setFlags(message.getFlags());
-
-            if(message.hasAttachments()) {
-                algor::List<algor::GeometricObject *> objects;
-
-                auto it = message.getAttachments().begin();
-                auto end = message.getAttachments().end();
-                for(; it!=end; ++it) {
-                    objects.add((*it)->clone());
-                }
-
-                this->setAttachedObjects(std::move(objects));
-            }
-        }
+        explicit OwnerMessage(Message const& message);
 
         friend class logger::Logger;
 

@@ -28,6 +28,7 @@ set(SOURCE_FILES
         src/native/cpp/algor/ClosestPairOfPoints_impl/algorithm.cpp
         src/native/cpp/test_cases/TestCasesLoader_impl/ParserShared.cpp
         src/native/cpp/logger/Logger.cpp
+        src/native/cpp/logger/Logger_impl/Message.cpp
 )
 
 set(TESTS_FILES

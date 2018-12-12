@@ -6,11 +6,14 @@
 #include <functional>
 #include <optional>
 
-#include <algor/GeometricObject.hpp>
 #include <algor/List.hpp>
 
 #include <logger/Logger_impl/LogTypes.hpp>
 #include <logger/Logger_impl/Message.hpp>
+
+namespace algor {
+    class GeometricObject;
+}
 
 namespace logger {
     class Logger;
