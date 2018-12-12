@@ -71,10 +71,11 @@ else()
     add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
 endif()
 
-add_executable(Tests
-        src/native/cpp/tests/impl/tests_init.cpp
-        ${SOURCE_FILES}
-        ${TESTS_FILES}
-        src/native/cpp/tests/impl/tests.cpp
-)
-target_link_libraries(Tests stdc++fs)
+    add_executable(Tests
+            src/native/cpp/tests/impl/tests_init.cpp
+            ${SOURCE_FILES}
+            ${TESTS_FILES}
+            src/native/cpp/tests/impl/tests.cpp
+    )
+    target_link_libraries(Tests stdc++fs)
+endif()
