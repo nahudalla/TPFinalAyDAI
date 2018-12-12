@@ -38,8 +38,16 @@ namespace file_loaders {
     template <typename Parser, typename = std::enable_if_t<__detail_FileLoader::is_supported_parser_v<Parser>>>
     class FileLoader {
         algor::List<typename Parser::ResultType::value_type> results;
+        algor::List<fs::path> loaded_files;
 
-        void load_files(algor::List<fs::path> const& filenames, algor::List<fs::path> * loaded = nullptr) {
+    public:
+        FileLoader(FileLoader const&) = default;
+        FileLoader(FileLoader &&) noexcept = default;
+        FileLoader &operator=(FileLoader const&) = default;
+        FileLoader &operator=(FileLoader &&) noexcept = default;
+        ~FileLoader() = default;
+
+        explicit FileLoader(algor::List<fs::path> const& filenames) {
             auto it = filenames.begin();
             auto end = filenames.end();
             for(; it != end; ++it) {
@@ -49,34 +57,28 @@ namespace file_loaders {
 
                 if(result.has_value()) {
                     this->results.add(std::move(*result));
-                    if(loaded != nullptr) loaded->add(*it);
+                    this->loaded_files.add(*it);
                 }
 
                 file.close();
             }
         }
-    public:
-        FileLoader(FileLoader const&) = default;
-        FileLoader(FileLoader &&) noexcept = default;
-        FileLoader &operator=(FileLoader const&) = default;
-        FileLoader &operator=(FileLoader &&) noexcept = default;
-        ~FileLoader() = default;
-
-        FileLoader(algor::List<fs::path> const& filenames, algor::List<fs::path> & loaded) {
-            this->load_files(filenames, &loaded);
-        }
-
-        explicit FileLoader(algor::List<fs::path> const& filenames) {
-            this->load_files(filenames);
-        }
 
         explicit FileLoader(fs::path const& path) : FileLoader(algor::List<fs::path>{path}) {}
 
-        const auto & getResults() const {
+        const auto & getLoadedFiles() const {
+            return this->loaded_files;
+        }
+
+        auto extractLoadedFiles() {
+            return std::move(this->loaded_files);
+        }
+
+        const auto & getContents() const {
             return this->results;
         }
 
-        auto extractResults() {
+        auto extractContents() {
             return std::move(this->results);
         }
     };

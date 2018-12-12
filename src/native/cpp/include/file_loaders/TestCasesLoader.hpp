@@ -67,10 +67,10 @@ namespace file_loaders {
                 test_case_paths.add(test_case_path);
             }
 
-            algor::List<fs::path> loaded;
-            FileLoader<TestCaseParser> loader(test_case_paths, loaded);
+            FileLoader<TestCaseParser> loader(test_case_paths);
 
-            this->test_cases = loader.extractResults();
+            auto loaded = loader.extractLoadedFiles();
+            this->test_cases = loader.extractContents();
 
             using ItTestCases = typename decltype(this->test_cases)::Iterator;
 
@@ -81,7 +81,7 @@ namespace file_loaders {
                 ++it_loaded;
 
                 FileLoader<SolutionParser> loader1(solution_path);
-                auto res = loader1.extractResults();
+                auto res = loader1.extractContents();
 
                 if(res.isEmpty()) return true;
 
