@@ -1,6 +1,42 @@
-#include <iostream>
+#include <string>
+#include <experimental/filesystem>
+
+#include <third_party/CLI11.hpp>
+
+#include <algor/List.hpp>
+
+#include <cli/init_utils.hpp>
+#include <cli/OutputWriter.hpp>
+#include <cli/execute_algorithms.hpp>
+#include <cli/logger_setup.hpp>
+
+namespace fs = std::experimental::filesystem;
 
 int main(int argc, char * argv[]) {
-    std::cout << "Hello World from CLI!" << std::endl;
+    cli::setup_logger();
+
+    CLI::App app {"Esta aplicación fue desarrollada como trabajo final para la materia Analisis y Diseño de Algoritmos I,\n"
+                  "en la carrera Ingeniería de Sistemas, Universidad Nacional del Centro de la Provincia de Buenos Aires,\n"
+                  "Argentina. Noviembre/Diciembre de 2018.\n",
+                  "TPFinalAyDAI"};
+
+    algor::List<fs::path> input_files;
+
+    cli::translate_labels(app);
+    cli::generate_algorithm_flags(app);
+    cli::generate_input_options(app, input_files);
+
+    std::string output_dir, output_file;
+
+    cli::generate_output_options(app, output_dir, output_file);
+
+    app.callback([&](){
+        cli::OutputWriter writer(output_dir, output_file);
+
+        cli::execute_algorithms(app, writer, input_files);
+    });
+
+    CLI11_PARSE(app, argc, argv);
+
     return 0;
 }

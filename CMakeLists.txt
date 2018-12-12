@@ -45,6 +45,12 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/ClosestPairOfPoints.cpp
 )
 
+set(CLI_SOURCE_FILES
+        src/native/cpp/cli/init_utils.cpp
+        src/native/cpp/cli/constants.cpp
+        src/native/cpp/cli/logger_setup.cpp
+)
+
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
     set(WASM_MODULE_NAME WASMModule)
 
@@ -70,8 +76,8 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
-endif()
+    add_executable(TPFinalAyDAI ${SOURCE_FILES} ${CLI_SOURCE_FILES} src/native/cpp/cli.cpp)
+    target_link_libraries(TPFinalAyDAI stdc++fs)
 
     add_executable(Tests
             src/native/cpp/tests/impl/tests_init.cpp
