@@ -24,38 +24,11 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 include_directories(src/native/cpp/include)
 
 set(SOURCE_FILES
-        src/native/cpp/include/algor/List.hpp
-        src/native/cpp/include/algor/List_impl/ConstIterator.hpp
-        src/native/cpp/include/algor/List_impl/Node.hpp
-        src/native/cpp/include/algor/List_impl/Iterator.hpp
-        src/native/cpp/include/algor/Point.hpp
-        src/native/cpp/include/algor/Segment.hpp
-        src/native/cpp/include/algor/Vector.hpp
-        src/native/cpp/include/algor/Comparator.hpp
-        src/native/cpp/include/algor/RBTree.hpp
-        src/native/cpp/include/algor/RBTree_impl/Node.hpp
-        src/native/cpp/include/algor/RBTree_impl/Color.hpp
-        src/native/cpp/include/algor/RBTree_impl/Nil.hpp
-        src/native/cpp/include/algor/RBTree_impl/DataNode.hpp
-        src/native/cpp/include/algor/RBTree_impl/ConstIterator.hpp
-        src/native/cpp/include/algor/RBTree_impl/Iterator.hpp
-        src/native/cpp/include/algor/AnySegmentsIntersect.hpp
-        src/native/cpp/include/algor/ComparisonResult.hpp
-        src/native/cpp/include/algor/Stack.hpp
-        src/native/cpp/include/algor/GrahamScan.hpp
-        src/native/cpp/include/algor/JarvisMarch.hpp
-        src/native/cpp/include/algor/Array.hpp
-        src/native/cpp/include/algor/ClosestPairOfPoints.hpp
-        src/native/cpp/include/algor/ClosestPairOfPoints_impl/algorithm.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionDirNames.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/ParserShared.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/SolutionParser.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader_impl/TestCaseParser.hpp
-        src/native/cpp/include/test_cases/TestCasesLoader.hpp
-
         src/native/cpp/algor/Vector.cpp
         src/native/cpp/algor/ClosestPairOfPoints_impl/algorithm.cpp
         src/native/cpp/test_cases/TestCasesLoader_impl/ParserShared.cpp
+        src/native/cpp/logger/Logger.cpp
+        src/native/cpp/logger/Logger_impl/Message.cpp
 )
 
 set(TESTS_FILES
@@ -66,10 +39,16 @@ set(TESTS_FILES
         src/native/cpp/tests/algor/Vector.cpp
         src/native/cpp/tests/algor/Segment.cpp
         src/native/cpp/tests/algor/RBTree.cpp
-        src/native/cpp/tests/algor/TestsLoaderCommon.hpp
+
         src/native/cpp/tests/algor/AnySegmentsIntersect.cpp
         src/native/cpp/tests/algor/GrahamScan_JarvisMarch.cpp
         src/native/cpp/tests/algor/ClosestPairOfPoints.cpp
+)
+
+set(CLI_SOURCE_FILES
+        src/native/cpp/cli/init_utils.cpp
+        src/native/cpp/cli/constants.cpp
+        src/native/cpp/cli/logger_setup.cpp
 )
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
@@ -97,14 +76,14 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
         )
     endif()
 else()
-    add_executable(CLI ${SOURCE_FILES} src/native/cpp/cli.cpp)
-endif()
+    add_executable(TPFinalAyDAI ${SOURCE_FILES} ${CLI_SOURCE_FILES} src/native/cpp/cli.cpp)
+    target_link_libraries(TPFinalAyDAI stdc++fs)
 
-add_executable(Tests
-        src/native/cpp/tests/Test.hpp
-        src/native/cpp/tests/impl/tests_init.cpp
-        ${SOURCE_FILES}
-        ${TESTS_FILES}
-        src/native/cpp/tests/impl/tests.cpp
-)
-target_link_libraries(Tests stdc++fs)
+    add_executable(Tests
+            src/native/cpp/tests/impl/tests_init.cpp
+            ${SOURCE_FILES}
+            ${TESTS_FILES}
+            src/native/cpp/tests/impl/tests.cpp
+    )
+    target_link_libraries(Tests stdc++fs)
+endif()

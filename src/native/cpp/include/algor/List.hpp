@@ -8,6 +8,11 @@
 #include <algor/Comparator.hpp>
 
 #include <functional>
+#include <initializer_list>
+
+#ifndef __EMSCRIPTEN__
+#include <ostream>
+#endif
 
 namespace algor {
     template<typename T>
@@ -132,6 +137,17 @@ namespace algor {
                 delete tmp;
             }
             this->last = nullptr;
+        }
+
+        List(std::initializer_list<T> list) {*this = std::move(list);}
+        List &operator=(std::initializer_list<T> list) {
+            auto it = list.begin();
+            auto end = list.end();
+            for(; it != end; ++it) {
+                this->add(std::move(*it));
+            }
+
+            return *this;
         }
 
         void add(T elem) {
@@ -289,6 +305,21 @@ namespace algor {
         bool operator!=(const List & rhs) {
             return !(*this == rhs);
         }
+
+#ifndef __EMSCRIPTEN__
+        friend std::ostream &operator<<(std::ostream & out, List const& list) {
+            auto it = list.begin();
+            auto end = list.end();
+            auto first = list.begin();
+
+            for(; it != end; ++it) {
+                if(it != first) out << std::endl;
+                out << *it;
+            }
+
+            return out;
+        }
+#endif
     };
 }
 

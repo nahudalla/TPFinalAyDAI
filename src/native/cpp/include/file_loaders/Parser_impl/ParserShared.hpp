@@ -5,7 +5,7 @@
 #include <istream>
 #include <optional>
 
-namespace test_cases::__detail_TestCasesLoader {
+namespace file_loaders::__detail_Parser {
     std::optional<algor::Point> parse_point(std::istream & input);
 }
 

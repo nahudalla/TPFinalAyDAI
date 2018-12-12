@@ -1,14 +1,27 @@
 #ifndef TPFINALAYDAI_ALGOR_SEGMENT_HPP
 #define TPFINALAYDAI_ALGOR_SEGMENT_HPP
 
+#include <algorithm>
+
 #include <algor/Point.hpp>
 #include <algor/Vector.hpp>
 #include <algor/ComparisonResult.hpp>
+#include <algor/GeometricObject.hpp>
 
 namespace algor {
-    class Segment {
+    class Segment : public GeometricObject {
         Point from, to;
+
+    protected:
+        const Segment *getAsSegment() const override {return this;}
+
     public:
+        GeometricObject *clone() const override {
+            return dynamic_cast<GeometricObject *>(new Segment(*this));
+        }
+
+        bool isSegment() const override {return true;}
+
         Segment(const Point &from, const Point &to) : from(from), to(to) {}
 
         const Point &getFrom() const {

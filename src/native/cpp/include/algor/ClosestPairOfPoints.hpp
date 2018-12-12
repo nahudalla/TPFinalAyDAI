@@ -26,6 +26,8 @@ namespace algor {
         }
 
         explicit ClosestPairOfPoints(Array<Point> points) {
+            if(points.size() < 2) return;
+
             this->points_x = points;
             this->points_y = std::move(points);
 
