@@ -95,8 +95,16 @@ Luego,
 - Si $d_1 < d_2 \rightarrow p_2$ está más cerca de $p_1$ que $p_3$
 - Si $d_1 == d_2 \rightarrow p_3$ está la misma distancia de $p_1$ que de $p_2$
 
+~ TexRaw
+\begin{samepage}
+~
+
 Sin embargo, como la función raíz cuadrada tiene los problemas de precisión que se hablaron anteriormente, es necesario hacer una modificación a éste método de comparación de distancias.
 > Como la función raíz cuadrada positiva es una función monónota creciente estricta[^monotona-estricta], es posible eliminarla de los cálculos de distancia **si el resultado se usará para hacer comparaciones**.
+
+~ TexRaw
+\end{samepage}
+~
 
 [^monotona-estricta]: Una función monótona creciente estricta es aquella para la cual se cumple: $x_1 > x_2 \rightarrow f(x_1) > f(x_2)$, para todo $x_1$, $x_2$.
 
@@ -162,20 +170,30 @@ Dados dos segmentos consecutivos $\overline{p_1 p_2}$ y $\overline{p_2 p_3}$, es
 #### Determinar si un segmento contiene un punto {#sec-algoritmos-geometricos-base-segmento-contiene}
 Como se explicó en [(&sec-algoritmos-geometricos-base-segmento;)][#sec-algoritmos-geometricos-base-segmento], usando el concepto de combinación convexa podemos determinar si un punto $p_3 = (x_3, y_3)$ está en el segmento de línea que une a $p_1 = (x_1, y_1)$ y $p_2 = (x_2, y_2)$. El siguiente procedimiento `EN-SEGMENTO` en pseudocódigo nos dará la respuesta:
 
-~ Code {#cod-en-segmento}
+~ TexRaw
+\begin{samepage}
+~
+~ Code {#cod-en-segmento; page-break-before: auto;}
 EN-SEGMENTO(\($p_1$\), \($p_2$\), \($p_3$\))
   \(**`if`**\) \($\mbox{min}(x_1, x_2)\leq x_3 \leq \mbox{max}(x_1, x_2)$\) and \($\mbox{min}(y_1, y_2)\leq y_3 \leq \mbox{max}(y_1, y_2)$\)
     \(**`return`**\) TRUE
   \(**`else return`**\) FALSE
 ~
+~ TexRaw
+\end{samepage}
+~
 
 #### Determinar si dos segmentos se intersecan {#sec-algoritmos-geometricos-base-segmento-intersecan}
-Para determinar si dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ se intersecan, debemos verificar si uno de los segmentos atraviesa la línea que contiene al otro. Un segmento $\overline{p_1 p_2}$ **_atraviesa_** una línea si el punto $p_1$ está de un lado de la línea y $p_2$ está del otro. Un caso particular a tener en cuenta es si $p_1$ o $p_2$ se encuentra directamente sobre la línea. Dos segmentos de línea se intersecan sí y sólo si una (o ambas) de las siguientes condiciones se cumplen:
+Para determinar si dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ se intersecan, debemos verificar si uno de los segmentos atraviesa la línea que contiene al otro. Un segmento $\overline{p_1 p_2}$ **_atraviesa_** una línea si el punto $p_1$ está de un lado de la línea y $p_2$ está del otro. Un caso particular a tener en cuenta es si $p_1$ o $p_2$ se encuentra directamente sobre la línea. Estas situaciones pueden verse graficadas en la [figura &fig-segmentos-intersecan;][#fig-segmentos-intersecan]. Entonces, dos segmentos de línea se intersecan sí y sólo si una (o ambas) de las siguientes condiciones se cumplen:
 
 1. Cada segmento atraviesa la línea que contiene al otro.
 1. Un extremo de un segmento está sobre el otro segmento.
 
 El siguiente procedimiento `SEGMENTOS-SE-INTERSECAN` determina si dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ se intersecan, usando el procedimiento [`EN-SEGMENTO`][#cod-en-segmento] definido en la sección anterior y un procedimiento `DIRECCION` auxiliar que implementa el cálculo del [producto cruzado][#sec-algoritmos-geometricos-base-producto] para los vectores $\overrightarrow{p_1 p_2}$ y $\overrightarrow{p_1 p_3}$ recibidos por parámetro.
+
+~ TexRaw
+\begin{samepage}
+~
 
 ~ Code {#cod-segmentos-intersecan}
 SEGMENTOS-SE-INTERSECAN(\($p_1$\), \($p_2$\), \($p_3$\), \($p_4$\))
@@ -201,11 +219,188 @@ DIRECCION(\($p_1$\), \($p_2$\), \($p_3$\))
   \(**`return`** $(p_3 - p_1) \times (p_2 - p_1)$\)
 ~
 
+~ TexRaw
+\end{samepage}
+~
+
+~ Begin Figure {#fig-segmentos-intersecan; caption:"(a) muestra dos segmentos que se intersecan. Se puede observar que cada punto de un segmento se encuentra de un lado distinto de la línea del otro segmento. (b) y (c) muestran el caso particular en un extremo de un segmento se encuentra sobre el otro.";}
+~ Begin SubFigureRow
+~ Begin SubFigure {padding-left: -10%;}
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,blue]
+  (0,0)--(2,2)
+  node[at start, below]{$p_1$}
+  node[at end, above]{$p_2$};
+\draw[ultra thick,red]
+  (0,2)--(2,0)
+  node[at start, above]{$p_3$}
+  node[at end, below]{$p_4$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ Begin SubFigure {padding-left: 10%;}
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,blue]
+  (0,0)--(2,2)
+  node[at start, below]{$p_1$}
+  node[at end, above]{$p_2$};
+\draw[ultra thick,red]
+  (1,1)--(0,2)
+  node[at start, below]{$p_3$}
+  node[at end, above]{$p_4$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ End SubFigureRow
+~ Begin SubFigureRow
+~ Begin SubFigure
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,blue]
+  (0,0)--(2,2)
+  node[at start, below]{$p_1$}
+  node[at end, above]{$p_2$};
+\draw[ultra thick,red]
+  (1,1)--(2,0)
+  node[at start, above]{$p_3$}
+  node[at end, below]{$p_4$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ End SubFigureRow
+~ End Figure
+
 #### Determinar de qué lado de la intersección de dos segmentos se encuentra un punto {#sec-algoritmos-geometricos-base-segmento-punto-interseccion}
 
+Dados dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ (que sabemos que se intersecan) y un punto $p_5=(x_5,y_5)$, nos interesa saber de qué lado de la intersección se encuentra la recta vertical que pasa por $p_5$. Si usamos las ecuaciones de las rectas que contienen a $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$, podemos calcular la componente $x$ del punto de intersección y luego compararla con $x_5$. Así si $x_5 < x$ entonces el punto se encuentra a la izquierda de la intersecci&oacute;n, mientras que si $x_5 > x$ el punto se encuentra a la derecha.
 
+Veamos primero la ecuaci&oacute;n de la recta que pasa por $p_1=(x_1,y_1)$ y $p_2=(x_2,y_2)$:
 
-#### Determinar si un segmento se encuentra por encima o por debajo de otro {#sec-algoritmos-geometricos-base-segmento-orden}
+~ Math
+\frac{x-x_1}{x_2-x_1} = \frac{y-y_1}{y_2-y_1}
+~
+
+Si despejamos $y$ llegamos a:
+
+~ Math
+y = \frac{x-x_1}{x_2-x_1}\cdot (y_2-y_1)+y_1
+~
+
+Ahora distribuimos el factor $(y_2-y_1)$:
+
+~ Math
+y = x\frac{y_2-y_1}{x_2-x_1}-x_1\frac{y_2-y_1}{x_2-x_1}+y_1
+~
+
+~ Equation {#eq-ecuacion-recta-1}
+y = x\cdot m_1-x_1\cdot m_1+y_1 \qquad \mbox{con} \qquad m_1 = \frac{y_2-y_1}{x_2-x_1}
+~
+
+Repetimos el mismo procedimiento para encontrar la ecuación de la recta que pasa por $p_3=(x_3,y_3)$ y $p_4=(x_4,y_4)$ y llegamos al siguiente resultado:
+
+~ Equation {#eq-ecuacion-recta-2}
+y = x\cdot m_2-x_3\cdot m_2+y_3 \qquad \mbox{con} \qquad m_2 = \frac{y_4-y_3}{x_4-x_3}
+~
+
+Como nuestro objetivo es encontrar el punto de intersección de las dos rectas, igualamos los resultados obtenidos en [&eq-ecuacion-recta-1;][#eq-ecuacion-recta-1] y [&eq-ecuacion-recta-2;][#eq-ecuacion-recta-2] y despejamos la componente $x$:
+
+~ Math
+x\cdot m_1-x_1\cdot m_1+y_1 = x\cdot m_2-x_3\cdot m_2+y_3
+~
+~ Math
+x\cdot m_1 - x\cdot m_2  = x_1\cdot m_1-x_3\cdot m_2+y_3-y_1
+~
+~ Math
+x\cdot (m_1 - m_2)  = x_1\cdot m_1-x_3\cdot m_2+y_3-y_1
+~
+~ Math
+x\cdot (m_1 - m_2)  = x_1\cdot m_1-x_3\cdot m_2+y_3-y_1
+~
+~ Equation {#eq-x-interseccion}
+x  = \frac{x_1\cdot m_1-x_3\cdot m_2+y_3-y_1}{m_1 - m_2}
+~
+
+Ahora que ya encontramos la componente $x$ del punto de intersección de los segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$, sólo nos resta compararla con $x_5$ para saber de qué lado de la intersección se encuentra $p_5$. Sin embargo aquí se presenta nuevamente el problema de precisión en los cálculos, ya que la [ecuación &eq-x-interseccion;][#eq-x-interseccion] tiene división. Veamos si es posible solucionar este problema de precisión, evitando la división. Primero nos interesa saber si $x < x_5$, por lo que, según la [ecuación &eq-x-interseccion;][#eq-x-interseccion], tenemos:
+
+~ Math
+\frac{x_1\cdot m_1-x_3\cdot m_2+y_3-y_1}{m_1 - m_2}
+< x_5
+~
+
+Multiplicando ambos lados de la inecuación por $m_1 - m_2$ nos queda:
+
+~ Equation {#eq-inecuacion-1}
+x_1\cdot m_1-x_3\cdot m_2+y_3-y_1
+< x_5 \cdot (m_1 - m_2)
+~
+
+Pero esto no termina aquí. Recordemos que $m_1 = \frac{y_2-y_1}{x_2-x_1}$ y $m_2 = \frac{y_4-y_3}{x_4-x_3}$, por lo que aún nos queda librarnos de las divisiones. Volviendo a reemplazar los valores de $m_1$ y $m_2$ en [&eq-inecuacion-1;][#eq-inecuacion-1] nos queda:
+
+~ Math
+x_1\cdot \frac{y_2-y_1}{x_2-x_1}-x_3\cdot \frac{y_4-y_3}{x_4-x_3}+y_3-y_1
+< x_5 \cdot \left(\frac{y_2-y_1}{x_2-x_1} - \frac{y_4-y_3}{x_4-x_3}\right)
+~
+
+O lo que es equivalente:
+
+~ Math
+\frac{x_1\cdot(y_2-y_1)}{x_2-x_1}-\frac{x_3\cdot(y_4-y_3)}{x_4-x_3}+\frac{y_3-y_1}{1}
+< \frac{x_5 \cdot(y_2-y_1)}{x_2-x_1} - \frac{x_5 \cdot(y_4-y_3)}{x_4-x_3}
+~
+
+Sumamos y restamos las fracciones de cada lado:
+
+~ Equation {#eq-inecuacion-2}
+\frac{
+  T_1 - T_2 + T_3
+}{(x_2 - x_1)\cdot(x_4-x_3)}
+< 
+\frac{
+  T_4 - T_5
+}{(x_2 - x_1)\cdot(x_4-x_3)}
+~
+
+Con
+~ Begin Center
+~ Snippet
+\begin{align*}
+  T_1 &= (x_4-x_3)\cdot(y_2-y_1)\cdot x_1 \\
+  T_2 &= (x_2-x_1)\cdot (y_4-y_3)\cdot x_3 \\
+  T_3 &= (x_2-x_1)\cdot(x_4-x_3)\cdot(y_3-y_1) \\
+  T_4 &= x_5\cdot(x_4-x_3)\cdot(y_2-y_1) \\
+  T_5 &= x_5\cdot(x_2-x_1)\cdot(y_4-y_3)
+\end{align*}
+~
+~ End Center
+
+Si observamos el denominador de cada lado de la [inecuación &eq-inecuacion-2;][#eq-inecuacion-2], podemos ver que es posible eliminarlo multiplicando ambos lados por $(x_2 - x_1)\cdot(x_4-x_3)$. Hacemos esto y llegamos a la [comparación &eq-inecuacion-3;][#eq-inecuacion-3], que nos permite saber si $x < x_5$ sólo con sumas, restas y multiplicaciones y, por lo tanto, sin errores de precisión.
+
+~ Equation {#eq-inecuacion-3}
+T_1 - T_2 + T_3 < T_4 - T_5
+~
+Con
+~ Begin Center
+~ Snippet
+\begin{align*}
+  T_1 &= (x_4-x_3)\cdot(y_2-y_1)\cdot x_1 \\
+  T_2 &= (x_2-x_1)\cdot (y_4-y_3)\cdot x_3 \\
+  T_3 &= (x_2-x_1)\cdot(x_4-x_3)\cdot(y_3-y_1) \\
+  T_4 &= x_5\cdot(x_4-x_3)\cdot(y_2-y_1) \\
+  T_5 &= x_5\cdot(x_2-x_1)\cdot(y_4-y_3)
+\end{align*}
+~
+~ End Center
+
+#### Determinar si un segmento se encuentra por encima o por debajo de otro en un punto{#sec-algoritmos-geometricos-base-segmento-orden}
+
+Dado un punto $p_0 = (x_0, y_0)$ y dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$, nos interesa saber qué segmento se encuentra por encima del otro, en la línea vertical definida por la componente $x$ de $p_0$. Para esto vamos a usar algunos de los conceptos definidos previamente.
+
+Primero, tenemos que diferenciar dos casos: los segmentos pueden intersecar en un punto o no. Para determinar esto, podemos usar lo visto en la [sección &sec-algoritmos-geometricos-base-segmento-intersecan;][#sec-algoritmos-geometricos-base-segmento-intersecan], dónde se explicó cómo determinar si dos segmentos intersecan o no. Veamos cada caso por separado:
+
+- **Los segmentos se intersecan:** en este caso, basta con ver de qué lado de la intersección se encuentra $p_0$ (como se explicó en la [sección anterior][#sec-algoritmos-geometricos-base-segmento-punto-interseccion]). Si se encuentra a la izquierda, tomamos los extremos izquierdos de cada segmento y comparamos sus coordenadas con respecto al eje $y$. Si $p_0$ se encuentra del lado derecho de la intersección, entonces tomamos los extremos derechos y también comparamos sus coordenadas con respecto al eje $y$. El segmento que tenga el extremo con mayor componente $y$ será el que se encuentre por encima.
+- **Los segmentos _no_ se intersecan:** si los segmentos no se intersecan, tomamos $p_i$ como el extremo más a la izquierda de todos los extremos de los dos segmentos. Luego, tomamos dos vectores, siendo $\vec{v_1}$ el formado por $p_i$ y el extremo derecho del segmento al que pertenece $p_i$, y $\vec{v_2}$ el formado por $p_0$ y el extremo izquierdo del otro segmento. Luego, si $\vec{v_2}$ se encuentra en sentido _antihorario_ con respecto a $\vec{v_1}$, entonces el segmento al que _no_ pertenece $p_i$ está por encima. Si $\vec{v_2}$ está en sentido _horario_, entonces el segmento al que _no_ pertenece $p_i$ está por debajo.
 
 ## Intersección entre varios segmentos {#sec-algoritmos-geometricos-interseccion}
 ### Algoritmo {#sec-algoritmos-geometricos-interseccion-algoritmo}
