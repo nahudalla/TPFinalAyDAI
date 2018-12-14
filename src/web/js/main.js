@@ -1,6 +1,3 @@
-import './toolsSetup.js';
-import './fileDropSetup.js';
-
 import statusBar from './classes/StatusBar.js'
 import {logger, FLAGS} from './classes/Logger.js'
 
@@ -19,3 +16,7 @@ logger.addListener(FLAGS.ALL, (message, flags) => {
     alert(msg);
   }
 });
+
+import './toolsSetup.js';
+import './fileDropSetup.js';
+import './canvasSetup.js';
