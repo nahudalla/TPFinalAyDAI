@@ -3,7 +3,7 @@ Como se mencionó en la [introducción][#sec-introduccion], los algoritmos geom�
 
 [^precision-doble-ieee-754]: En la representación IEEE 754 de doble precisión (64 bits), la usada comunmente en la mayoría de las computadoras, el ancho de 11 bits del exponente permite la representación de números en el rango comprendido entre $2^{-1023}$ y $2^{+1023}$ ($10^{-308}$ y $10^{+308}$), con una precisión de 15 a 17 dígitos decimales completos. Fuente: [Formato en coma flotante de doble precisión - Wikipedia].
 
-[Formato en coma flotante de doble precisión - Wikipedia]: https://es.wikipedia.org/wiki/Formato_en_coma_flotante_de_doble_precisi%C3%B3n#Descripci%C3%B3n_del_formato "Wikipedia"
+[Formato en coma flotante de doble precisión - Wikipedia]: ^https://es.wikipedia.org/wiki/Formato_en_coma_flotante_de_doble_precisi%C3%B3n#Descripci%C3%B3n_del_formato "Wikipedia"
 
 [^vectores-colineares]: Dos vectores son colineares cuando, al graficarlos, se encuentran ambos sobre la misma línea.
 
@@ -19,16 +19,16 @@ Como se mencionó en la [introducción][#sec-introduccion], los algoritmos geom�
 ~~~
 ~~
 
-En la sección [#sec-algoritmos-geometricos-base] se muestran conceptos matemáticos que sólo involucran suma, resta y multiplicación, por lo que su tiempo de ejecución es $O(1)$. Estos conceptos serán usados en las próximas secciones como base para el resto de los algoritmos. En la sección [#sec-algoritmos-geometricos-interseccion] se presenta un algoritmo con tiempo de ejecución $O(\mbox{n }log(\mbox{n}))$ para, dado un conjunto de segmentos, determinar si al menos dos de ellos se intersecan. La sección [#sec-algoritmos-geometricos-poligono] muestra dos algoritmos para determinar los puntos que forman los vértices del polígono convexo más chico que contiene a todos los puntos de entrada, en tiempos $O(\mbox{n }log(\mbox{n}))$ para [Graham Scan][#sec-algoritmos-geometricos-poligono-graham] y $O(\mbox{n }h)$ para [Jarvis March][#sec-algoritmos-geometricos-poligono-jarvis], donde $h$ es la cantidad de puntos que forman los vértices del polígono. Por último, en la sección [#sec-algoritmos-geometricos-puntos], se muestra un algoritmo con tiempo $O(\mbox{n }log(\mbox{n}))$ para encontrar el par de puntos que se encuentran más cercanos, entre un conjunto de $\mbox{n}$ puntos.
+En la sección [#sec-algoritmos-geometricos-base] se muestran conceptos matemáticos que sólo involucran suma, resta y multiplicación, por lo que su tiempo de ejecución es $O(1)$. Estos conceptos serán usados en las próximas secciones como base para el resto de los algoritmos. En la sección [#sec-algoritmos-geometricos-interseccion] se presenta un algoritmo con tiempo de ejecución $O(\mbox{n }\log(\mbox{n}))$ para, dado un conjunto de segmentos, determinar si al menos dos de ellos se intersecan. La sección [#sec-algoritmos-geometricos-poligono] muestra dos algoritmos para determinar los puntos que forman los vértices del polígono convexo más chico que contiene a todos los puntos de entrada, en tiempos $O(\mbox{n }\log(\mbox{n}))$ para [Graham Scan][#sec-algoritmos-geometricos-poligono-graham] y $O(\mbox{n }h)$ para [Jarvis March][#sec-algoritmos-geometricos-poligono-jarvis], donde $h$ es la cantidad de puntos que forman los vértices del polígono. Por último, en la sección [#sec-algoritmos-geometricos-puntos], se muestra un algoritmo con tiempo $O(\mbox{n }\log(\mbox{n}))$ para encontrar el par de puntos que se encuentran más cercanos, entre un conjunto de $\mbox{n}$ puntos.
 
 ## Conceptos matemáticos {#sec-algoritmos-geometricos-base}
 
 ### Producto cruzado {#sec-algoritmos-geometricos-base-producto}
 
-El concepto matemático de **producto cruzado** es esencial para solucionar problemas de algoritmos geométricos. Si consideramos los vectores $\textcolor{blue}{\overrightarrow{a}}=(x_1,y_1)$ y $\textcolor{red}{\overrightarrow{b}}=(x_2,y_2)$, su producto cruzado se calcula como se muestra a continuación en la [ecuación &eq-producto-cruz;][#eq-producto-cruz]. Los componentes $x_1$ e $y_1$ del vector $\textcolor{blue}{\overrightarrow{a}}$ se ponen como primer fila en una matriz, y los componentes $x_2$ e $y_2$ del vector $\textcolor{red}{\overrightarrow{b}}$ como segunda. Luego, el módulo del determinante de esta matriz es la longitud de un vector $\overrightarrow{a}\times \overrightarrow{b}$ perpendicular a ambos vectores. Si tomamos el resultado del determinante sin el módulo, el signo del mismo nos indica si el vector $\overrightarrow{a}\times \overrightarrow{b}$ apunta hacia arriba o hacia abajo. Además, la longitud $|\overrightarrow{a}\times \overrightarrow{b}|$ del vector resultado es también el área del paralelogramo formado por los vectores $\textcolor{blue}{\overrightarrow{a}}$ y $\textcolor{red}{\overrightarrow{b}}$. Esto puede visualizarse gráficamente en la [figura &producto-cruzado;][#producto-cruzado].
+El concepto matemático de **producto cruzado** es esencial para solucionar problemas de algoritmos geométricos. Si consideramos los vectores $\textcolor{blue}{\vec{a}}=(x_1,y_1)$ y $\textcolor{red}{\vec{b}}=(x_2,y_2)$, su producto cruzado se calcula como se muestra a continuación en la [ecuación &eq-producto-cruz;][#eq-producto-cruz]. Los componentes $x_1$ e $y_1$ del vector $\textcolor{blue}{\vec{a}}$ se ponen como primer fila en una matriz, y los componentes $x_2$ e $y_2$ del vector $\textcolor{red}{\vec{b}}$ como segunda. Luego, el módulo del determinante de esta matriz es la longitud de un vector $\vec{a}\times \vec{b}$ perpendicular a ambos vectores. Si tomamos el resultado del determinante sin el módulo, el signo del mismo nos indica si el vector $\vec{a}\times \vec{b}$ apunta hacia arriba o hacia abajo. Además, la longitud $|\vec{a}\times \vec{b}|$ del vector resultado es también el área del paralelogramo formado por los vectores $\textcolor{blue}{\vec{a}}$ y $\textcolor{red}{\vec{b}}$. Esto puede visualizarse gráficamente en la [figura &producto-cruzado;][#producto-cruzado].
 
 ~ Equation {#eq-producto-cruz}
-\textcolor{blue}{\overrightarrow{a}} \times \textcolor{red}{\overrightarrow{b}} =
+\textcolor{blue}{\vec{a}} \times \textcolor{red}{\vec{b}} =
 \begin{vmatrix}
   x_1 & y_1 \\
   x_2 & y_2
@@ -36,22 +36,22 @@ El concepto matemático de **producto cruzado** es esencial para solucionar prob
 = x_1 \cdot y_2-y_1 \cdot x_2
 ~
 
-Observando con presición la [figura &producto-cruzado;][#producto-cruzado] vemos que si tomamos el signo del producto cruzado, podemos usarlo para determinar sin errores de precisión[^producto-cruz-no-precision] si un vector se encuentra en sentido _horario_ o _antihorario_ con respecto a otro. Tomando la primer componente del producto cruzado como vector de referencia, un resultado _**positivo**_ indica que el vector de la segunda componente se encuentra en sentido _**antihorario**_. Un resultado _**negativo**_ indica que el vector de la segunda componente se encuentra en sentido _**horario**_ con respecto al vector de referencia. Un caso a tener en cuenta es cuando el resultado del producto cruzado es cero. Si $\textcolor{blue}{\overrightarrow{a}} \times \textcolor{red}{\overrightarrow{b}} = 0$, entonces los vectores son colineares. Esto es, ambos se encuentran en una misma línea y el ángulo entre ellos es cero. Habiendo observado esto, el cálculo del ángulo $\alpha$ entre los vectores se hace innecesario para determinar el sentido de giro desde un vector hacia el otro.
+Observando con presición la [figura &producto-cruzado;][#producto-cruzado] vemos que si tomamos el signo del producto cruzado, podemos usarlo para determinar sin errores de precisión[^producto-cruz-no-precision] si un vector se encuentra en sentido _horario_ o _antihorario_ con respecto a otro. Tomando la primer componente del producto cruzado como vector de referencia, un resultado _**positivo**_ indica que el vector de la segunda componente se encuentra en sentido _**antihorario**_. Un resultado _**negativo**_ indica que el vector de la segunda componente se encuentra en sentido _**horario**_ con respecto al vector de referencia. Un caso a tener en cuenta es cuando el resultado del producto cruzado es cero. Si $\textcolor{blue}{\vec{a}} \times \textcolor{red}{\vec{b}} = 0$, entonces los vectores son colineares. Esto es, ambos se encuentran en una misma línea y el ángulo entre ellos es cero. Habiendo observado esto, el cálculo del ángulo $\alpha$ entre los vectores se hace innecesario para determinar el sentido de giro desde un vector hacia el otro.
 
 [^producto-cruz-no-precision]: En el cálculo del producto cruz no se presentan errores de precisión porque es puramente aritmética básica de números enteros: resta y producto. Sin embargo, los números enteros presentan otros problemas que hay que tener en cuenta, como por ejemplo [overflow y underflow]^en inglés^.
 
 [overflow y underflow]: https://en.wikipedia.org/wiki/Integer_overflow "Integer Overflow - Wikipedia"
 
-~ Begin Figure {#producto-cruzado; caption:"Visualización del producto cruzado. (a) el resultado _**positivo**_ del producto cruzado indica que el vector $\overrightarrow{b}$ se encuentra en sentido _**antihorario**_ con respecto a $\overrightarrow{a}$. (b) indica la situación inversa, el resultado _**negativo**_ nos dice que $\overrightarrow{a}$ se encuentra en sentido _**horario**_ con respecto a $\overrightarrow{b}$. (c) muestra la relación entre los dos resultados."}
+~ Begin Figure {#producto-cruzado; caption:"Visualización del producto cruzado. (a) el resultado _**positivo**_ del producto cruzado indica que el vector $\vec{b}$ se encuentra en sentido _**antihorario**_ con respecto a $\vec{a}$. (b) indica la situación inversa, el resultado _**negativo**_ nos dice que $\vec{a}$ se encuentra en sentido _**horario**_ con respecto a $\vec{b}$. (c) muestra la relación entre los dos resultados."}
 ~ Begin SubFigureRow
 ~ Begin SubFigure {padding-left:-5%;}
 ~~ Snippet
 \begin{tikzpicture}
 \draw[-,fill=white!95!red](0,0)--(3,0)--(4,1)--(1,1)--cycle;
-\node at (2,0.5) {$|\textcolor{blue}{\overrightarrow{a}}\times \textcolor{red}{\overrightarrow{b}}|$};
-\draw[ultra thick,-latex,blue](0,0)--(3,0)node[midway,below]{$\overrightarrow{a}$};
-\draw[ultra thick,-latex,red](0,0)--(1,1)node[midway,above]{$\overrightarrow{b}$};
-\draw[ultra thick,-latex,blue!50!red](0,0)--(0,3)node[pos=0.7,right]{$\overrightarrow{a}\times \overrightarrow{b}$};
+\node at (2,0.5) {$|\textcolor{blue}{\vec{a}}\times \textcolor{red}{\vec{b}}|$};
+\draw[ultra thick,-latex,blue](0,0)--(3,0)node[midway,below]{$\vec{a}$};
+\draw[ultra thick,-latex,red](0,0)--(1,1)node[midway,above]{$\vec{b}$};
+\draw[ultra thick,-latex,blue!50!red](0,0)--(0,3)node[pos=0.7,right]{$\vec{a}\times \vec{b}$};
 \draw (0.6,0) arc [start angle=0,end angle=45,radius=0.6]
 node[pos=0.7,right]{$\alpha$};
 \end{tikzpicture}
@@ -61,10 +61,10 @@ node[pos=0.7,right]{$\alpha$};
 ~~ Snippet
 \begin{tikzpicture}
 \draw[-,fill=white!95!red](0,2)--(3,2)--(4,3)--(1,3)--cycle;
-\node at (2,2.5) {$|\textcolor{red}{\overrightarrow{b}}\times \textcolor{blue}{\overrightarrow{a}}|$};
-\draw[ultra thick,-latex,blue](0,2)--(3,2)node[midway,below]{$\overrightarrow{a}$};
-\draw[ultra thick,-latex,red](0,2)--(1,3)node[midway,above]{$\overrightarrow{b}$};
-\draw[ultra thick,-latex,blue!50!red](0,2)--(0,-0.5)node[pos=0.7,right]{$\overrightarrow{b}\times \overrightarrow{a}$};
+\node at (2,2.5) {$|\textcolor{red}{\vec{b}}\times \textcolor{blue}{\vec{a}}|$};
+\draw[ultra thick,-latex,blue](0,2)--(3,2)node[midway,below]{$\vec{a}$};
+\draw[ultra thick,-latex,red](0,2)--(1,3)node[midway,above]{$\vec{b}$};
+\draw[ultra thick,-latex,blue!50!red](0,2)--(0,-0.5)node[pos=0.7,right]{$\vec{b}\times \vec{a}$};
 \draw (0.6,2) arc [start angle=0,end angle=45,radius=0.6]
 node[pos=0.7,right]{$\alpha$};
 \end{tikzpicture}
@@ -74,19 +74,19 @@ node[pos=0.7,right]{$\alpha$};
 ~ Begin SubFigureRow
 ~ Begin SubFigure
 ~~ Begin Snippet
-$\textcolor{blue}{\overrightarrow{a}}\times \textcolor{red}{\overrightarrow{b}} = -\textcolor{red}{\overrightarrow{b}}\times \textcolor{blue}{\overrightarrow{a}}$
+$\textcolor{blue}{\vec{a}}\times \textcolor{red}{\vec{b}} = -\textcolor{red}{\vec{b}}\times \textcolor{blue}{\vec{a}}$
 ~~ End Snippet
 ~ End SubFigure
 ~ End SubFigureRow
 ~ End Figure
 
-### Distancia euclideana
+### Distancia euclideana {#sec-algoritmos-geometricos-base-euclideana}
 Formalmente, la distancia euclideana $d_1$ entre dos puntos $p_1=(x_1,y_1)$ y $p_2=(x_2,y_2)$ es la longitud del vector $\overrightarrow{p_1 p_2}=(x_2-x_1,y_2-y_1)$, es decir:
 ~ Equation {#eq-dist-1}
 d_1(p_1,p_2) = |\overrightarrow{p_1 p_2}| = \sqrt{(x_2-x_1)^2+(y_2-y_1)^2}
 ~
 Ahora, si tenemos un tercer punto $p_3=(x_3,y_3)$ y queremos saber entre $p_2$ y $p_3$ cuál se encuentra más cerca de $p_1$, calculamos la distancia $d_2$ entre $p_1$ y $p_3$ y la comparamos con la obtenida en [#eq-dist-1]:
-~ Equation
+~ Equation {#eq-dist-2}
 d_2(p_1,p_3) = |\overrightarrow{p_1 p_3}| = \sqrt{(x_3-x_1)^2+(y_3-y_1)^2}
 ~
 Luego,
@@ -101,21 +101,111 @@ Sin embargo, como la función raíz cuadrada tiene los problemas de precisión q
 [^monotona-estricta]: Una función monótona creciente estricta es aquella para la cual se cumple: $x_1 > x_2 \rightarrow f(x_1) > f(x_2)$, para todo $x_1$, $x_2$.
 
 Entonces, para nuestro propósito de comparar distancias entre puntos, usaremos la [fórmula &eq-dist-1;][#eq-dist-1], sin la raíz cuadrada:
-~ Equation
+~ Equation {#eq-dist-3}
 d'(p_1,p_2) = |\overrightarrow{p_1 p_2}| = (x_2-x_1)^2+(y_2-y_1)^2
 ~
 
-### Segmento de línea
+### Segmento de línea {#sec-algoritmos-geometricos-base-segmento}
 
-#### Determinar la dirección de giro de dos segmentos consecutivos
+Una **_combinación convexa_** de dos puntos distintos $p_1 = (x_1, y_1)$ y $p_2 = (x_2, y_2)$ es cualquier punto $p_3 = (x_3, y_3)$ tal que para algún $\alpha$ en el rango $0 \leq \alpha \leq 1$, tenemos que $x_3 = \alpha x_1 + (1-\alpha)x_2$ y $y_3 = \alpha y_1 + (1-\alpha)y_2$. Además escribimos que $p_3 = \alpha p_1 + (1-\alpha)p_2$. Intuitivamente, $p_3$ es cualquier punto que está en la línea que pasa por $p_1$ y $p_2$ y está en o entre $p_1$ y $p_2$ en la línea. Dados dos puntos distintos $p_1$ y $p_2$, el **_segmento de línea_** $\overline{p_1 p_2}$ es el conjunto de combinaciones convexas de $p_1$ y $p_2$. Llamamos a $p_1$ y $p_2$ los **_extremos_** del segmento $\overline{p_1 p_2}$. A veces el orden de $p_1$ y $p_2$ importa, y entonces hablamos del **_segmento dirigido_** $\overrightarrow{p_1 p_2}$. Si $p_1$ es el **_origen_** $(0,0)$, entonces podemos tratar el segmento dirigido $\overrightarrow{p_1 p_2}$ como el **_vector_** $\vec{p_2}$.
 
-#### Determinar si un segmento contiene un punto
+#### Determinar la dirección de giro de dos segmentos consecutivos {#sec-algoritmos-geometricos-base-segmento-giro}
 
-#### Determinar si dos segmentos se intersecan
+Dados dos segmentos consecutivos $\overline{p_1 p_2}$ y $\overline{p_2 p_3}$, es decir que comparten un extremo, nos interesa saber si giran hacia la izquierda o la derecha en $p_2$. Como se muestra en la [figura &fig-segmentos-vectores;][#fig-segmentos-vectores], podemos interpretar los segmentos como los vectores  $\overrightarrow{p_1 p_2}$ y $\overrightarrow{p_2 p_3}$ trasladados al origen. Luego, con estos vectores es posible usar el [producto cruzado (&sec-algoritmos-geometricos-base-producto;)][#sec-algoritmos-geometricos-base-producto] para determinar si el giro es hacia la izquierda o hacia la derecha. Si $\overrightarrow{p_2 p_3}$ se encuentra en sentido **_antihorario_** con respecto a $\overrightarrow{p_1 p_2}$, entonces el giro de los segmentos consecutivos $\overline{p_1 p_2}$ y $\overline{p_2 p_3}$ es hacia la **_izquierda_**. Equivalentemente, si $\overrightarrow{p_2 p_3}$ se encuentra en sentido **_horario_** con respecto a $\overrightarrow{p_1 p_2}$, entonces el giro es hacia la **_derecha_**.
 
-#### Determinar de qué lado de la intersección de dos segmentos se encuentra un punto
+~ Begin Figure {#fig-segmentos-vectores; caption:"(a) muestra los segmentos consecutivos $\overline{p_1 p_2}$ y $\overline{p_2 p_3}$. (b) muestra los segmentos interpretados como vectores $\overrightarrow{p_1 p_2}$ y $\overrightarrow{p_2 p_3}$. (c) muestra los vectores $\overrightarrow{p_1 p_2}$ y $\overrightarrow{p_2 p_3}$ trasladados a un mismo origen."}
+~ Begin SubFigureRow
+~ Begin SubFigure
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,blue]
+  (0,0)--(1.5,0.75)
+  node[midway, above]{$\overline{p_1 p_2}$}
+  node[at start,below]{$\textcolor{black}{p_1}$}
+  node[at end,below]{$\textcolor{black}{p_2}$};
+\draw[ultra thick,red]
+  (1.5,0.75)--(2.25,2.25)
+  node[midway, right]{$\overline{p_2 p_3}$}
+  node[at end, right]{$\textcolor{black}{p_3}$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ Begin SubFigure
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,-latex,blue]
+  (0,0)--(1.5,0.75)
+  node[midway, below]{$\overrightarrow{p_1 p_2}$};
+\draw[ultra thick,-latex,red]
+  (1.5,0.75)--(2.25,2.25)
+  node[midway, right]{$\overrightarrow{p_2 p_3}$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ End SubFigureRow
+~ Begin SubFigureRow
+~ Begin SubFigure
+~~ Snippet
+\begin{tikzpicture}
+\draw[ultra thick,-latex,blue]
+  (0,0)--(1.5,0.75)
+  node[midway, below]{$\overrightarrow{p_1 p_2}$};
+\draw[ultra thick,-latex,red]
+  (0,0)--(0.75,1.5)
+  node[midway, left]{$\overrightarrow{p_2 p_3}$};
+\end{tikzpicture}
+~~
+~ End SubFigure
+~ End SubFigureRow
+~ End Figure
 
-#### Determinar si un segmento se encuentra por encima o por debajo de otro
+#### Determinar si un segmento contiene un punto {#sec-algoritmos-geometricos-base-segmento-contiene}
+Como se explicó en [(&sec-algoritmos-geometricos-base-segmento;)][#sec-algoritmos-geometricos-base-segmento], usando el concepto de combinación convexa podemos determinar si un punto $p_3 = (x_3, y_3)$ está en el segmento de línea que une a $p_1 = (x_1, y_1)$ y $p_2 = (x_2, y_2)$. El siguiente procedimiento `EN-SEGMENTO` en pseudocódigo nos dará la respuesta:
+
+~ Code {#cod-en-segmento}
+EN-SEGMENTO(\($p_1$\), \($p_2$\), \($p_3$\))
+  \(**`if`**\) \($\mbox{min}(x_1, x_2)\leq x_3 \leq \mbox{max}(x_1, x_2)$\) and \($\mbox{min}(y_1, y_2)\leq y_3 \leq \mbox{max}(y_1, y_2)$\)
+    \(**`return`**\) TRUE
+  \(**`else return`**\) FALSE
+~
+
+#### Determinar si dos segmentos se intersecan {#sec-algoritmos-geometricos-base-segmento-intersecan}
+Para determinar si dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ se intersecan, debemos verificar si uno de los segmentos atraviesa la línea que contiene al otro. Un segmento $\overline{p_1 p_2}$ **_atraviesa_** una línea si el punto $p_1$ está de un lado de la línea y $p_2$ está del otro. Un caso particular a tener en cuenta es si $p_1$ o $p_2$ se encuentra directamente sobre la línea. Dos segmentos de línea se intersecan sí y sólo si una (o ambas) de las siguientes condiciones se cumplen:
+
+1. Cada segmento atraviesa la línea que contiene al otro.
+1. Un extremo de un segmento está sobre el otro segmento.
+
+El siguiente procedimiento `SEGMENTOS-SE-INTERSECAN` determina si dos segmentos $\overline{p_1 p_2}$ y $\overline{p_3 p_4}$ se intersecan, usando el procedimiento [`EN-SEGMENTO`][#cod-en-segmento] definido en la sección anterior y un procedimiento `DIRECCION` auxiliar que implementa el cálculo del [producto cruzado][#sec-algoritmos-geometricos-base-producto] para los vectores $\overrightarrow{p_1 p_2}$ y $\overrightarrow{p_1 p_3}$ recibidos por parámetro.
+
+~ Code {#cod-segmentos-intersecan}
+SEGMENTOS-SE-INTERSECAN(\($p_1$\), \($p_2$\), \($p_3$\), \($p_4$\))
+  \($d_1$\) = DIRECCION(\($p_3$\), \($p_4$\), \($p_1$\))
+  \($d_2$\) = DIRECCION(\($p_3$\), \($p_4$\), \($p_2$\))
+  \($d_3$\) = DIRECCION(\($p_1$\), \($p_2$\), \($p_3$\))
+  \($d_4$\) = DIRECCION(\($p_1$\), \($p_2$\), \($p_4$\))
+
+  \(**`if`**\) ((\($d_1 > 0$\) and \($d_2 < 0$\)) or (\($d_1 < 0$\) and \($d_2 > 0$\))) and
+      ((\($d_3 > 0$\) and \($d_4 < 0$\)) or (\($d_3 < 0$\) and \($d_4 > 0$\)))
+    \(**`return`**\) TRUE
+  \(**`elseif`** $d_1 == 0$\) and EN-SEGMENTO(\($p_3$\), \($p_4$\), \($p_1$\))
+    \(**`return`**\) TRUE
+  \(**`elseif`** $d_2 == 0$\) and EN-SEGMENTO(\($p_3$\), \($p_4$\), \($p_2$\))
+    \(**`return`**\) TRUE
+  \(**`elseif`** $d_3 == 0$\) and EN-SEGMENTO(\($p_1$\), \($p_2$\), \($p_3$\))
+    \(**`return`**\) TRUE
+  \(**`elseif`** $d_4 == 0$\) and EN-SEGMENTO(\($p_1$\), \($p_2$\), \($p_4$\))
+    \(**`return`**\) TRUE
+  \(**`else return`**\) FALSE
+
+DIRECCION(\($p_1$\), \($p_2$\), \($p_3$\))
+  \(**`return`** $(p_3 - p_1) \times (p_2 - p_1)$\)
+~
+
+#### Determinar de qué lado de la intersección de dos segmentos se encuentra un punto {#sec-algoritmos-geometricos-base-segmento-punto-interseccion}
+
+
+
+#### Determinar si un segmento se encuentra por encima o por debajo de otro {#sec-algoritmos-geometricos-base-segmento-orden}
 
 ## Intersección entre varios segmentos {#sec-algoritmos-geometricos-interseccion}
 ### Algoritmo {#sec-algoritmos-geometricos-interseccion-algoritmo}

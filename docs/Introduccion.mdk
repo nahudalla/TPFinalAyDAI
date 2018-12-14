@@ -2,7 +2,7 @@
 
 En el campo de la ciencia de la computación, en la rama de la computación geométrica, se presentan problemas que tienen como entrada una descripción de un conjunto de elementos geométricos, como ser puntos, vectores, segmentos de línea, o puntos de un polígono (usualmente en orden anti-horario). A partir de esta entrada se pide responder a distintas preguntas, de la manera más eficiente posible. Algunas de estas son:
 
-- Dados dos vectores $A=(x_1, y_1)$ y $B=(x_2, y_2)$, si se sigue el recorrido que forman al ponerlos consecutivamente, ¿se gira a la izquierda, a la derecha o no hay giro?
+- Dados dos vectores $\vec{a}=(x_1, y_1)$ y $\vec{b}=(x_2, y_2)$, si se sigue el recorrido que forman al ponerlos consecutivamente, ¿se gira a la izquierda, a la derecha o no hay giro?
 - ¿Se intersecan dos segmentos dados?
 - De un conjunto de segmentos, ¿hay intersecciones entre ellos?
 - De un conjunto de puntos, ¿cuál es polígono más chico que los incluye a todos ellos?
@@ -13,7 +13,7 @@ Algunas de estas preguntas tienen lugar en campos muy variados, como ser: genera
 En el campo de las matemáticas, algunos de los problemas mencionados arriba se resuelven facilmente. Por ejemplo, para saber el sentido de giro de dos vectores basta con calcular el ángulo que forman con la fórmula [#eq-angulo-vectores]. Estas fórmulas presentan un inconveniente muy importante al ser evaluadas por una computadora: la precisión de las operaciones es limitada, ya que las implementaciones de las funciones trigonométricas, raíces y división requieren de aritmética de punto flotante.
 
 ~ Equation { #eq-angulo-vectores; caption: "Fórmula para obtener el ángulo entre vectores" }
-cos(\alpha) = \frac{x_1 \cdot x_2 + y_1 \cdot y_2}{\sqrt{x_1^2+y_1^2}\cdot\sqrt{x_2^2+y_2^2}}
+\cos(\alpha) = \frac{x_1 \cdot x_2 + y_1 \cdot y_2}{\sqrt{x_1^2+y_1^2}\cdot\sqrt{x_2^2+y_2^2}}
 ~
 
 En la sección [#sec-algoritmos-geometricos-base] se explica cómo resolver este problema de manera simple, con unos pocos cálculos que involucran únicamente suma, resta y mutiplicación de números enteros. Luego, en las secciones [#sec-algoritmos-geometricos-interseccion], [#sec-algoritmos-geometricos-poligono] y [#sec-algoritmos-geometricos-puntos] se presentan tres problemas geométricos, sus algoritmos solución y análisis de complejidad para ellos. En la sección [#sec-impl-algor], se explica una implementación simple en lenguaje C++ de cada uno de los algoritmos geométricos de la sección [#sec-algoritmos-geometricos].

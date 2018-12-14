@@ -28,6 +28,9 @@ blankpage {
     display: none;  
   }
 }
+pre,code {
+  font-size: 1.01em;
+}
 Appendix {
 }
 
