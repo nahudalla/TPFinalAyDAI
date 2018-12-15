@@ -528,5 +528,98 @@ JARVIS-MARCH(Q)
 El algoritmo se ejecuta en $O(\mbox{n}\,h)$, siendo $h$ la cantidad de vértices que hay en el polígono $P$. Las líneas 1 y 2 se ejecutan cada una en $O(\mbox{n})$, porque realizan una búsqueda lineal. Las líneas 3-5 tienen tiempo $O(1)$. El bucle **`while`** de las líneas 6-14 se ejecuta exactamente $h$ veces, una vez por cada vértice del polígono $P$. En el interior del bucle se inserta el punto $p$ actual a $P$ ($O(1)$), se busca el próximo punto que pertenezca a $P$ (el de menor ángulo con respecto a $p$, esta operación de búsqueda lineal se realiza en $O(\mbox{n}$) y por último se elimina el nuevo punto de $P$ de la lista $Q$ ($O(1)$). El cuerpo del bucle, por lo tanto tiene una complejidad temporal $O(\mbox{n})$ y se ejecuta $h$ veces. Finalmente, el tiempo de ejecución final del algoritmo `JARVIS-MARCH` es $O(\mbox{n}\,h)$.
 
 ## Encontrar los puntos más cercanos {#sec-algoritmos-geometricos-puntos}
+En esta sección veremos un algoritmo para, dado un conjunto $Q$ de puntos, encontrar los dos puntos que se encuentran más cercanos. El algoritmo trivial de búsqueda por fuerza bruta toma $O(\mbox{n}^2)$, ya que mira todos los posibles pares de puntos que se pueden formar con el conjunto de entrada. El algoritmo que se presenta aquí se basa en la técnica _divide y conquista_, y toma $O(\mbox{n} \log{n})$. Para lograr esta complejidad temporal, el algoritmo recibe como entrada dos arreglos: $X$ que contienen los puntos ordenados en forma creciente según su coordenada $x$, e $Y$ que contiene todos los puntos _sin ordenar_. En cada llamada recursiva, el algoritmo divide el espacio de búsqueda para las coordenadas $x$ en dos, por lo que es necesario que $X$ esté ordenado previamente. Esta restricción no aplica al arreglo $Y$, ya que el mismo será ordenado durante la propia ejecución del algoritmo empleando _merge sort_.
+
+En cada llamada recursiva, el algoritmo verifica si la cantidad de puntos es $|X| \leq 3$ y, en caso que lo sea, realiza la búsqueda de los dos puntos más cercanos por fuerza bruta y los retorna. Además, en este paso, el arreglo $Y$ también es ordenado por fuerza bruta. Si $|X| > 3$, se utiliza la técnica _divide y conquista_ como sigue:
+
+- **Divide:** Se toman las $\frac{n}{2}$ primeras posiciones de los arreglos $X$ e $Y$ y con ellas se crean los arreglos $X_i$ e $Y_i$. Los elementos restantes de cada arreglo se usan para crear dos arreglos $X_d$ e $Y_d$. Es importante remarcar que sobre el arreglo $X$ se está realizando la división en dos para la _búsqueda_ y sobre el arreglo $Y$ para _ordernarlo_, ya que lo necesitaremos en el último paso del algoritmo.
+
+- **Conquista:** Ahora se hacen dos llamadas recursivas al algoritmo. La primera con $X_i$ e $Y_i$, y la segunda con $X_d$ e $Y_d$. Estos llamados recursivos realizan dos tareas: devuelven dos pares de puntos $\delta_i$ y $\delta_d$, que son los más cercanos para el espacio de búsqueda izquierdo y derecho respectivamente, y ordena el arreglo de puntos $Y$ según sus coordenadas $y$ de forma creciente. Tomemos ahora $\delta = \mbox{el par de puntos con menor distancia entre }\delta_i\mbox{ y }\delta_d$.
+
+- **Combina:** En este paso se combinan de forma ordenada los arreglos $Y_i$ e $Y_d$ en el arreglo $Y$, que ahora quedará ordenado. Luego, debemos tener en cuenta que, si bien $\delta$ es el par de puntos más cercano entre los puntos de $X_i$ y $X_d$, puede que haya un par de puntos con distancia $< |\delta|$ y que uno de los puntos del par se encuentre en $X_i$ y el otro en $X_d$. Si existe un par con distancia $< |\delta|$, necesariamente deben estar a distancia $|\delta|$ como máximo de la línea $l$ que dividió los puntos en dos en el primer paso. Por esto, haremos una nueva búsqueda restringida a la zona de ancho $2|\delta|$ centrada en la línea $l$. Para esto, seguimos los siguientes pasos:
+ 1. Se crea un arreglo $Y'$, que es el arreglo $Y$ con todos los puntos que no estén en la zona de ancho $2|\delta|$ removidos. El arreglo $Y'$ está ordenado por la coordenada $y$, tal como el arreglo $Y$.
+ 1. Por cada punto $p$ en el arreglo $Y'$, se intentan buscar los puntos en $Y'$ que estén a distancia $|\delta|$ como máximo. De todos ellos, nos quedamos con el más cercano y denominamos al par que forma con $p$, $\delta'$. Por propiedades geométricas, sólo es necesario ver los 7 puntos que le siguen a $p$ en el arreglo $Y'$.
+ 1. Si $|\delta'| < |\delta|$, entonces el par más cercano estaba repartido entre los arreglos $X_i$ y $X_d$. Devolver $\delta'$ en ese caso y $\delta$ en caso contrario.
+
 ### Algoritmo {#sec-algoritmos-geometricos-puntos-algoritmo}
+En el siguiente pseudocódigo se muestra la función `PUNTOS-MAS-CERCANOS`, que recibe como parámetros los arreglos $X$ e $Y$ e implementa el algoritmo descrito arriba, junto con otras funciones auxiliares.
+
+```
+PUNTOS-MAS-CERCANOS(\($X$\), \($Y$\))
+ 1 \(**`if`**\) \($\mid X\mid\leq 3$\)
+ 2   ORDENAR-Y(\($Y$\))
+ 3   \(**`return`**\) FUERZA-BRUTA(\($X$\))
+ 4 \($m = \frac{\mid X\mid}{2}$\)
+ 5 \($X_i = X[0 .. m]$\)
+ 6 \($Y_i = Y[0 .. m]$\)
+ 7 \($X_d = X[\mid X\mid-m .. \mid X\mid-1]$\)
+ 8 \($Y_d = Y[\mid X\mid-m .. \mid X\mid-1]$\)
+ 9 \($\delta_i =$\) PUNTOS-MAS-CERCANOS(\($X_i$\), \($Y_i$\))
+10 \($\delta_d =$\) PUNTOS-MAS-CERCANOS(\($X_d$\), \($Y_d$\))
+11 MERGE(\($Y$\), \($Y_i$\), \($Y_d$\))
+12 \($\delta =$\) el par con distancia minima entre \($\delta_i$\) y \($\delta_d$\)
+13 \($S =$\) todos los puntos en \($Y$\) que estén a distancia horizontal
+      \($< \mid\delta\mid$\) del punto \($X[m]$\)
+14 \($\delta_s =$\) MAS-CERCANOS-TIRA(\($S$\))
+15 \(**`if`** $\mid\delta_s\mid < \mid\delta\mid$\)
+16   \(**`return`** $\delta_s$\)
+17 \(**`else`**\)
+18   \(**`return`** $\delta$\)
+```
+```
+FUERZA-BRUTA(\($X$\))
+1 \($\delta = \varnothing$\)
+2 \(**`for`**\) cada punto \($p$\) en \($X$\)
+3   \(**`for`**\) cada punto \($q$\) \(_`despues`_\) de \($p$\) en \($X$\)
+4     \(**`if`** $\delta$\) está vacío \(**o** $\mid\langle p, q\rangle\mid < \mid\delta\mid$\)
+5       \($\delta = \langle p, q\rangle$\)
+6 \(**`return`** $\delta$\)
+```
+```
+ORDENAR-Y(\($Y$\))
+1 \(**`for`**\) cada punto \($p=(x_1,y_1)$\) en \($X$\)
+2   \(**`for`**\) cada punto \($q=(x_2,y_2)$\) \(_`despues`_\) de \($p$\) en \($X$\)
+3     \(**`if`** $y_2 < y_1$\)
+4       invertir \($p$\) y \($q$\) en \($Y$\)
+```
+```
+MERGE(\($Y$\), \($Y_i$\), \($Y_d$\))
+ 1 \($i = 0$\)
+ 2 \($j = 0$\)
+ 3 \($k = 0$\)
+ 4 \(**`while`** $i < \mid Y_i\mid$ **`and`** $j < \mid Y_d\mid$\)
+ 5   \(**`if`** $Y_i[i]_y < Y_d[j]_y$\)
+ 6     \($Y[k] = Y_i[i]$\)
+ 7     \($i = i + 1$\)
+ 8   \(**`else`**\)
+ 9     \($Y[k] = Y_d[j]$\)
+10     \($j = j + 1$\)
+11   \($k = k + 1$\)
+12 \(**`for`** $i$ `hasta` $\mid Y_i\mid$\)
+13   \($Y[k] = Y_i[i]$\)
+14   \($k = k + 1$\)
+15 \(**`for`** $j$ `hasta` $\mid Y_d\mid$\)
+16   \($Y[k] = Y_d[j]$\)
+17   \($k = k + 1$\)
+```
+```
+MAS-CERCANOS-TIRA(\($S$\), \($d$\))
+1 \($\delta = \varnothing$\)
+2 \(**`for`**\) cada punto \($p$\) en \($S$\)
+3   \(**`for`**\) cada punto \($q$\) \(_`despues`_\) de \($p$\) en \($S$\)
+        \(**`and`**\) mientras que \($\mid p_y-q_y\mid < d$\)
+4     \(**`if`** $\mid\langle p, q\rangle\mid < d$\)
+5       \($\delta = \langle p, q\rangle$\)
+6       \($d = \mid\delta\mid$\)
+7 \(**`return`** $\delta$\)
+```
+
 ### Análisis de complejidad {#sec-algoritmos-geometricos-puntos-complejidad}
+La función `PUNTOS-MAS-CERCANOS` se ejecuta en $O(\mbox{n} \log(\mbox{n}))$, siendo $n$ la cantidad de puntos en $X$ e $Y$. Si bien las funciones `FUERZA-BRUTA` y `ORDENAR-Y` son $O(\mbox{n}^2)$, siempre las llamamos con $n \leq 3$, por lo que las líneas 1-3 son $O(1)$. Las líneas 5 y 6 son $O(\mbox{m})$ y 6 y 7 son $O(\mbox{n}-\mbox{m})$, por lo que de 5 a 7 es todo $O(n)$. Las líneas 9 y 10 son una recurrencia que se analizará en breve. La línea 11 llama a la función `MERGE`, cuya ejecución es $O(n)$. La línea 12 es $O(1)$ y la 13 $O(n)$ ya que recorre todo el arreglo $Y$. Las líneas 15-18 son $O(1)$.
+
+Nos queda entonces pendiente el análisis de la línea 14, que llama a la función `MAS-CERCANOS-TIRA` y las líneas 9 y 10 que son una recurrencia. Veamos:
+
+- La función `MAS-CERCANOS-TIRA` puede parecer $O(\mbox{n}^2)$ a simple vista, pero en un análisis más detallado desde el punto de vista geométrico puede verse que el bucle **`for`** interior se ejecuta un número constante de veces, 7. Por lo tanto, `MAS-CERCANOS-TIRA` es $O(\mbox{n})$ y la línea 14 de `PUNTOS-MAS-CERCANOS` resulta $O(\mbox{n})$ también.
+- Para las líneas 9 y 10 tenemos la siguiente recurrencia: si $T(\mbox{n})$ es el tiempo de la función `PUNTOS-MAS-CERCANOS`, con lo analizado hasta ahora vemos que si $n \leq 3$ entonces $T(\mbox{n}) = O(1)$ y si $n > 3$ entonces $T(\mbox{n}) = 2T(\frac{\mbox{n}}{2}) + cO(\mbox{n})$. El término $2T(\frac{\mbox{n}}{2})$ viene de las dos llamadas recursivas de las líneas 9 y 10, en las cuales se procesa la mitad izquierda y derecha de los arreglos respectivamente. El término $cO(\mbox{n})$ son el resto de las operaciones, que son un número constante $c$ y toman como máximo $O(\mbox{n})$. Esta recurrencia tiene un resultado conocido, y es $O(\mbox{n} \log{\mbox{n}})$.
+
+Por lo tanto `PUNTOS-MAS-CERCANOS` se ejecuta en tiempo $O(\mbox{n} \log{\mbox{n}})$.
