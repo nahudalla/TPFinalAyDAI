@@ -4,12 +4,12 @@
 #include <optional>
 #include <string>
 #include <fstream>
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 
 #include <cli/constants.hpp>
 #include <logger/Logger.hpp>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = boost::filesystem;
 
 namespace cli {
     namespace __detail_OutputWriter {
@@ -96,7 +96,7 @@ namespace cli {
                     return __detail_OutputWriter::getNullOstream();
                 }
 
-                std::ofstream file(out_path);
+                std::ofstream file(out_path.string());
 
                 if(!file) {
                     logger::log(

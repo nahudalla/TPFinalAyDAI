@@ -11,6 +11,11 @@ namespace Tests {
         std::function<bool()> test;
 
         Test(std::string name, std::function<bool()> test);
+        Test(Test const&) = default;
+        Test(Test &&) noexcept = default;
+        Test &operator=(Test const&) = default;
+        Test &operator=(Test &&) noexcept = default;
+        ~Test() = default;
 
         static std::list<Test> tests;
     };
@@ -20,7 +25,7 @@ namespace Tests {
 struct Test_ ## name {\
     static char _init;\
     static char init() noexcept { \
-        try{Tests::Test::tests.emplace_back(::Tests::Test(#name, (def)));}catch(...){} \
+        try{Tests::Test::tests.push_back(::Tests::Test(#name, std::function<bool()>(def)));}catch(...){} \
         return ' '; \
     } \
 }; \

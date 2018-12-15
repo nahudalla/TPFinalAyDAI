@@ -6,10 +6,10 @@
 
 #include <algor/List.hpp>
 
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 #include <fstream>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = boost::filesystem;
 
 namespace file_loaders {
     namespace __detail_FileLoader {
@@ -51,7 +51,7 @@ namespace file_loaders {
             auto it = filenames.begin();
             auto end = filenames.end();
             for(; it != end; ++it) {
-                std::ifstream file(*it);
+                std::ifstream file(it->string());
 
                 auto result = Parser::parse(file);
 

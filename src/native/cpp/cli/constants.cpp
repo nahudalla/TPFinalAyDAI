@@ -9,7 +9,7 @@ namespace cli::constants {
             return std::string("No es un archivo: ") + filename;
         }
         std::string genFileIsEmptyError(std::string const& filename) {
-            return std::string("El archivo está vacío: ") + filename;
+            return std::string("El archivo esta vacio: ") + filename;
         }
 
         std::string genCouldNotOpenFileError(std::string const& filename) {
@@ -23,7 +23,7 @@ namespace cli::constants {
             return std::string("No es un directorio: ") + filename;
         }
         std::string genDirectoryIsEmptyError(std::string const& filename) {
-            return std::string("El directorio está vacío: ") + filename;
+            return std::string("El directorio esta vacio: ") + filename;
         }
     }
 }

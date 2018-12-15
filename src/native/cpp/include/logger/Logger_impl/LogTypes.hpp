@@ -4,6 +4,8 @@
 #include <bitset>
 #include <stdexcept>
 
+#undef ERROR
+
 namespace logger::__detail_Logger {
     constexpr const std::size_t MAX_FLAGS = 10;
 
