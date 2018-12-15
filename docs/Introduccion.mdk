@@ -17,8 +17,9 @@ En el campo de las matemáticas, algunos de los problemas mencionados arriba se 
 ~
 
 En la sección [#sec-algoritmos-geometricos-base] se explica cómo resolver este problema de manera simple, con unos pocos cálculos que involucran únicamente suma, resta y mutiplicación de números enteros. Luego, en las secciones [#sec-algoritmos-geometricos-interseccion], [#sec-algoritmos-geometricos-poligono] y [#sec-algoritmos-geometricos-puntos] se presentan tres problemas geométricos, sus algoritmos solución y análisis de complejidad para ellos. En la sección [#sec-impl-algor], se explica una implementación simple en lenguaje C++ de cada uno de los algoritmos geométricos de la sección [#sec-algoritmos-geometricos].
-
+<!--
 Los algoritmos implementados se recopilaron en una aplicación de línea de comandos, cuyo uso e implementación se cubren en la sección [#sec-cli].
+-->
 
 Por último pero no menos importante, en la sección [#sec-anexo-tda] del [Anexo][#sec-anexo], se encuentran las especificaciones formales de los Tipos de Datos Abstractos necesarios para la implementación de los algoritmos cubiertos en este trabajo, así como también el análisis de complejidad de sus operaciones como restricción para una implementación eficiente.
 

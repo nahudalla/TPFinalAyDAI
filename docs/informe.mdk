@@ -63,7 +63,9 @@ Appendix {
 [INCLUDE=./Introduccion.mdk]
 [INCLUDE=./Algoritmos.mdk]
 [INCLUDE=./ImplementacionAlgoritmos.mdk]
+<!--
 [INCLUDE=./CLI.mdk]
+-->
 
 # Anexo {#sec-anexo}
 ## Tipos de datos abstractos {#sec-anexo-tda}
@@ -74,8 +76,9 @@ Appendix {
 [INCLUDE=./anexo/tda/Pila.mdk]
 [INCLUDE=./anexo/tda/RBTree.mdk]
 
+<!--
 [INCLUDE=./anexo/CompilacionProyecto.mdk]
 
 ## Bibliografía {#sec-anexo-bibliografia}
-
+-->
 &pagebreak;

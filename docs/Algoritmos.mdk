@@ -402,16 +402,98 @@ Primero, tenemos que diferenciar dos casos: los segmentos pueden intersecar en u
 - **Los segmentos se intersecan:** en este caso, basta con ver de qué lado de la intersección se encuentra $p_0$ (como se explicó en la [sección anterior][#sec-algoritmos-geometricos-base-segmento-punto-interseccion]). Si se encuentra a la izquierda, tomamos los extremos izquierdos de cada segmento y comparamos sus coordenadas con respecto al eje $y$. Si $p_0$ se encuentra del lado derecho de la intersección, entonces tomamos los extremos derechos y también comparamos sus coordenadas con respecto al eje $y$. El segmento que tenga el extremo con mayor componente $y$ será el que se encuentre por encima.
 - **Los segmentos _no_ se intersecan:** si los segmentos no se intersecan, tomamos $p_i$ como el extremo más a la izquierda de todos los extremos de los dos segmentos. Luego, tomamos dos vectores, siendo $\vec{v_1}$ el formado por $p_i$ y el extremo derecho del segmento al que pertenece $p_i$, y $\vec{v_2}$ el formado por $p_0$ y el extremo izquierdo del otro segmento. Luego, si $\vec{v_2}$ se encuentra en sentido _antihorario_ con respecto a $\vec{v_1}$, entonces el segmento al que _no_ pertenece $p_i$ está por encima. Si $\vec{v_2}$ está en sentido _horario_, entonces el segmento al que _no_ pertenece $p_i$ está por debajo.
 
-## Intersección entre varios segmentos {#sec-algoritmos-geometricos-interseccion}
-### Algoritmo {#sec-algoritmos-geometricos-interseccion-algoritmo}
-### Análisis de complejidad {#sec-algoritmos-geometricos-interseccion-complejidad}
+## Detectar intersección entre varios segmentos {#sec-algoritmos-geometricos-interseccion}
 
-## Encontrar polígono convexo {#sec-algoritmos-geometricos-poligono}
+En esta sección se presenta un algoritmo que, dados $\mbox{n}$ segmentos, de los cuales ninguno debe ser vertical, determina si existe o no al menos una intersección entre ellos. 
+
+El algoritmo usa una técnica conocida como _barrido_. Esta técnica consiste en mover una línea vertical, usualmente de izquierda a derecha, por el plano que forman los ejes coordenados. La _línea de barrido_ frena cuando encuentra un _punto de evento_, y allí se hacen las comprobaciones para detectar una intersección.
+
+En este algoritmo, los puntos de eventos son los extremos de los segmentos. Por esto, es necesario como primer paso ordenar los extremos de los segmentos, de izquierda a derecha y, en caso de haber más de un extremo para una misma coordenada del eje $x$, de abajo hacia arriba.
+
+El algoritmo matiene un orden entre los segmentos. En este orden, dos segmentos son comparables sólo si la línea de barrido se encuentra sobre ellos. Es decir, para cada coordenada del eje $x$, todos los segmentos que pasan por la línea vertical son comparables entre ellos. Un segmento $a$ se considera _más grande_ que otro segmento $b$ si éste último se encuentra _por debajo_ de él. Para hacer esta comparación usamos la técnica mostrada previamente en la [sección &sec-algoritmos-geometricos-base-segmento-orden;][#sec-algoritmos-geometricos-base-segmento-orden], usando como punto de referencia cualquiera que esté sobre la línea de barrido actual.
+
+Figura ilustrando el párrafo anterior
+{ color: #F00; font-size: 3em; }
+
+Como se aprecia en la figura anterior, si dos segmentos se intersecan, necesariamente cambian de orden según lo establecido previamente. Más aún, dos segmentos $a$ y $b$ se intersecan _sólo si_ en algún punto de evento, $a$ y $b$ son consecutivos. Esto puede apreciarse también en la figura anterior.
+
+Dado un punto de evento, es necesario saber con qué otros segmentos es comparable el segmento al que pertenece. Para esto, mantenemos una estructura de árbol binario de búsqueda. Cuando la línea de barrido pasa por el extremo izquierdo de un segmento, este es agregado al árbol. Cuando la línea de barrido pasa por el extremo derecho, el segmento es eliminado del árbol.
+
+Como ya se dijo más arriba, dos segmentos se intersecan sólo si en algún punto de evento son consecutivos. Cuando la línea de barrido se topa con el extremo izquierdo de un segmento, luego de agregarlo al árbol de búsqueda, vemos si existe algún otro segmento inmediatamente por encima o por debajo de él en ese punto, es decir vemos si tiene segmentos que sean consecutivos en el orden establecido. Si existe alguno, verificamos si interseca con el segmento nuevo. Al encontrarse la línea de barrido con el extremo derecho de un segmento, debemos eliminarlo del árbol de búsqueda. Antes de eliminarlo, verificamos si los segmentos anterior y siguiente a él intersecan, ya que al eliminarlo quedarían en orden consecutivo entre ellos.
+
+Para ordenar el árbol de búsqueda, usamos como criterio de comparación la técnica mostrada previamente en la [sección &sec-algoritmos-geometricos-base-segmento-orden;][#sec-algoritmos-geometricos-base-segmento-orden], donde se explica cómo determinar si un segmento se encuentra por encima o por debajo de otro.
+
+### Algoritmo {#sec-algoritmos-geometricos-interseccion-algoritmo}
+El siguiente pseudocódigo muestra la función `ALGUN-SEGMENTO-INTERSECA` que implementa el algoritmo descrito arriba:
+
+```
+ALGUN-SEGMENTO-INTERSECA(L)
+ 1 \($T = \emptyset$\)
+ 2 ordenar los extremos de los segmentos de la lista L de
+     izquierda a derecha, poniendo primero los extremos
+     izquierdos de los segmentos en caso de coincidir las
+     coordenadas \($x$\) y, en caso de ser ambos extremos
+     izquierdos, decidiendo por la coordenada \($y$\) de
+     abajo hacia arriba.
+ 3 \(**`for`**\) cada punto \($p$\) en la lista ordenada de extremos
+ 4   \(**`if`** $p$\) es el extremo izquierdo de un segmento \($s$\)
+ 5     INSERTAR(T, \($s$\))
+ 6     \(**`if`**\) (ARRIBA(T, \($s$\)) existe e interseca a \($s$\))
+           or (ABAJO(T, \($s$\)) existe e interseca a \($s$\))
+ 7       \(**`return`**\) TRUE
+ 8   \(**`if`** $p$\) es el extremo derecho de un segmento \($s$\)
+ 9     \(**`if`**\) ARRIBA(T, \($s$\)) y ABAJO(T, \($s$\)) existen y
+           se intersecan entre sí
+10       \(**`return`**\) TRUE
+11     ELIMINAR(T, \($s$\))
+13 \(**`return`**\) FALSE
+```
+
+### Análisis de complejidad {#sec-algoritmos-geometricos-interseccion-complejidad}
+Si la lista de entrada `L` tiene $\mbox{n}$ elementos, entonces `ALGUN-SEGMENTO-INTERSECA` se ejecuta en $O(\mbox{n} \log(\mbox{n}))$. La línea 1 toma $O(1)$, ya que es inicializar un árbol vacío. La línea 2 se compone de tres operaciones: primero extraer los extremos de cada segmento en L ($O(\mbox{n})$) y agregarlos a una lista de extremos ($O(1)$), y por último ordenar la lista según el criterio ($O(\mbox{n} \log(\mbox{n}))$ usando merge sort). El bucle **`for`** de las líneas 3-11 se ejecuta una vez por cada extremo. Como hay $2n$ extremos, se ejecuta como máximo $2n$ veces. El cuerpo del bucle toma $O(\log(\mbox{n}))$ en ejecutarse, ya que cada operación en el árbol $T$ toma $O(\mbox{n} \log(\mbox{n}))$ usando un árbol de búsqueda balanceado (como por ejemplo el Árbol RB (o Red Black Tree en inglés)). La comprobación para saber si dos segmentos intersecan se ejecuta en $O(1)$ usando el método descrito en la [sección &sec-algoritmos-geometricos-base-segmento-intersecan;][#sec-algoritmos-geometricos-base-segmento-intersecan]. El tiempo total es entonces $O(\mbox{n} \log(\mbox{n}))$.
+
+## Encontrar polígono convexo que encierra a $n$ puntos {#sec-algoritmos-geometricos-poligono}
+Dado un conjunto $Q$ de puntos, nos interesa ahora encontrar el polígono convexo $P$ más chico que los encierre a todos. Cada punto de $Q$ debe quedar en el interior o en el borde de $P$. Asumimos aquí que cada punto de $Q$ es único, es decir no se repiten, y que hay al menos tres puntos que no son colineares. La siguiente figura muestra un ejemplo de polígono convexo que encierra a un conjunto de puntos.
+
+Figura mostrando el convex hull
+{ color: #F00; font-size: 3em; }
+
+A continuación se muestran dos algoritmos que encuentran los puntos que forman este polígono, en orden antihorario. El primero, Graham Scan, se ejecuta en tiempo $O(\mbox{n} \log(\mbox{n}))$, siendo $\mbox{n}$ la cantidad de puntos en $Q$. El segundo, Jarvis March, se ejecuta en $O(\mbox{n}\,h)$, siendo $h$ la cantidad de puntos en el polígono $P$. Cada vértice de $P$ es también un punto de $Q$, ambos algoritmos explotan esta propiedad recorriéndolos y decidiendo cuál tomar y cuál no. 
+
 ### Graham Scan {#sec-algoritmos-geometricos-poligono-graham}
+Este algoritmo recorre los puntos en sentido antihorario, comenzando por el que se encuentra más abajo (o el más a la izquierda en caso que más de uno se encuentren en el mismo nivel). Cada punto es insertado exactamente una vez en una pila $S$. Eventualmente, cada punto que no pertenezca al polígono que encierra a todos los puntos en $Q$ es eliminado de $S$. Cuando el algoritmo termina, la pila $S$ contiene exactamente los vértices del polígono $P$ en orden antihorario de su aparición en el borde.
+
 #### Algoritmo {#sec-algoritmos-geometricos-poligono-graham-algoritmo}
+El procedimiento `GRAHAM-SCAN` mostrado a continuación implementa el algoritmo descrito previamente y llama a las funciones `TOPE(\($S$\))` y `SIGUIENTE-TOPE\($S$\)` que devuelven el tope de la pila y el elemento siguiente al tope de la pila, respectivamente.
+
+```
+GRAHAM-SCAN(\($Q$\))
+ 1 sea \($p_0$\) el punto en \($Q$\) con la coordenada \($y$\) mínima, o el
+     más a la izquierda en caso de empate.
+ 2 sean \($\langle p_1, p_2, \dots, p_m\rangle$\) los puntos restantes en
+     \($Q$\), ordenados de menor a mayor según el ángulo polar que forman
+     aldedor de \($p_0$\) (si más un punto tiene el mismo ángulo, eliminar
+     todos menos el más lejano a \($p_0$\))
+ 3 sea \($S$\) una pila vacía
+ 4 INSERTAR(\($p_0$\), \($S$\))
+ 5 INSERTAR(\($p_1$\), \($S$\))
+ 6 INSERTAR(\($p_2$\), \($S$\))
+ 7 \(**`for`** $i = 3$ **hasta** $m$\)
+ 8   \(**while**\) el ángulo formado por los puntos SIGUIENTE-TOPE(\($S$\)),
+        TOPE(\($S$\)) y \($p_i$\) haga un giro que \(_`no`_\) sea a la
+        izquierda
+ 9     ELIMINAR(\($S$\))
+10   INSERTAR(\($p_i$\), \($S$\))
+11 \(**`return`** $S$\)
+```
+
 #### Análisis de complejidad {#sec-algoritmos-geometricos-poligono-graham-complejidad}
+El algoritmo se ejecuta en tiempo $O(\mbox{n} \log(\mbox{n}))$. La línea 1 se ejecuta en $O(\mbox{n})$ ya que es necesario recorrer todos los puntos para encontrar el mínimo. La línea 2 se ejecuta en $O(\mbox{n} \log(\mbox{n}))$, hay dos operaciones: primero se ordenan los puntos ($O(\mbox{n} \log(\mbox{n}))$ usando merge sort) y luego se eliminan los que tienen el mismo ángulo polar dejando el más lejano ($O(\mbox{n})$, se recorren los puntos ya ordenados para eliminar repetidos). El cálculo explícito del ángulo polar no es necesario si se realizan comparaciones entre los ángulos como se explicó en la [sección &sec-algoritmos-geometricos-base-producto;][#sec-algoritmos-geometricos-base-producto]. Las líneas 3-6 son operaciones $O(1)$. El bucle **`for`** de las líneas 7 a 10 itera una vez por cada punto de la subsecuencia $\langle p_3, p_4, \dots, p_m\rangle$. El bucle **`while`** se ejecuta como máximo $m-2$ veces en toda la ejecución del algoritmo[^foot-while-on], por lo que, en total, su ejecución es $O(\mbox{n})$. Luego, el bucle **`for`** es $O(\mbox{n})$ y la ejecución completa del algoritmo `GRAHAM-SCAN` es $O(\mbox{n} \log(\mbox{n}))$, siendo dominada por el ordenamiento inicial de los puntos.
+
+[^foot-while-on]: Como el bucle **`while`** sólo realiza operaciones `ELIMINAR` en la pila, necesariamente debe ejecutarse como máximo durante toda la ejecución del algoritmo la cantidad de elementos que se agregan a la pila. En la pila se agregan $m$ elementos, de los cuales dos no se eliminan nunca. Por esto, la cantidad de ciclos _totales_ del bucle es $m-2$.
 
 ### Jarvis March {#sec-algoritmos-geometricos-poligono-jarvis}
+
 #### Algoritmo {#sec-algoritmos-geometricos-poligono-jarvis-algoritmo}
 #### Análisis de complejidad {#sec-algoritmos-geometricos-poligono-jarvis-complejidad}
 
