@@ -493,9 +493,39 @@ El algoritmo se ejecuta en tiempo $O(\mbox{n} \log(\mbox{n}))$. La línea 1 se e
 [^foot-while-on]: Como el bucle **`while`** sólo realiza operaciones `ELIMINAR` en la pila, necesariamente debe ejecutarse como máximo durante toda la ejecución del algoritmo la cantidad de elementos que se agregan a la pila. En la pila se agregan $m$ elementos, de los cuales dos no se eliminan nunca. Por esto, la cantidad de ciclos _totales_ del bucle es $m-2$.
 
 ### Jarvis March {#sec-algoritmos-geometricos-poligono-jarvis}
+Este es otro algoritmo para calcular el polígono convexo más chico $P$ que encierra a todos los puntos del conjunto $Q$. Jarvis March se basa en una técnica llamada _gift wrapping_ en inglés, que consiste en ir "envolviendo" los puntos desde el exterior, primero desde el punto más bajo hasta llegar al más alto (_cadena derecha_) y luego desde el más alto hasta el más bajo (_cadena izquierda_). 
+
+Primero, se deben encontrar los puntos $p_a$ y $p_b$ más alto y más bajo, respectivamente. En caso de empate en sus coordenadas $y$, se toma el punto de más a la izquierda para $p_b$ y el de más a la derecha para $p_a$. Para construir la cadena _derecha_, debemos empezar por $p_b$ y buscar el punto que forme el menor ángulo con respecto a $p_b$ y una línea horizontal hacia la derecha de él. Luego, repetimos la búsqueda pero con el punto encontrado anteriormente. Tanto $p_b$ como todos los puntos encontrados hasta llegar a $p_a$ forman la _cadena derecha_ del polígono $P$. Para la _cadena izquierda_ repetimos el mismo procedimiento, pero esta vez empezando con $p_a$ y calculando los ángulos con respecto a la línea horizontal que se extiende hacia la izquierda de $p_a$. Una vez que se alcance $p_b$, la cadena izquierda estará completa.
 
 #### Algoritmo {#sec-algoritmos-geometricos-poligono-jarvis-algoritmo}
+A continuación se muestra en pseudocódigo la función `JARVIS-MARCH`, que implementa el algoritmo descrito arriba. El algoritmo recibe como parámetro una lista $Q$ con los puntos de entrada y produce una lista $P$ con los puntos que pertenecen al polígono. Para realizar las comparaciones necesarias para encontrar los mínimos en las líneas 7 y 13, se pueden usar los métodos descritos en las secciones [#sec-algoritmos-geometricos-base-producto] y [#sec-algoritmos-geometricos-base-segmento-contiene]. Los métodos `INSERTAR` y `ELIMINAR` insertan y eliminan elementos de las listas, respectivamente. La variable $e$ se vuelve `TRUE` sólo cuando el punto más alto $p_a$ es alcanzado. En dicho punto, se debe invertir el lado para el cual se calculan los ángulos.
+
+```
+JARVIS-MARCH(Q)
+ 1 \($p_a =$\) el punto más alto de \($Q$\), tomando el más
+      hacia la derecha en caso de empate
+ 2 \($p_b =$\) el punto más bajo de \($Q$\), tomando el más
+      hacia la izquierda en caso de empate
+ 3 \($P = \emptyset$\)
+ 4 \($p = p_b$\)
+ 5 \($e =$\) FALSE
+ 6 \(**`while`** `(`$p$\) no sea \($p_b$\)) or (\($e$\) sea FALSE)
+ 7   INSERTAR(\($P$\), \($p$\))
+ 8   \(**`if`** $e$\) es FALSE
+ 9     \($p =$\) el punto de \($Q$\) con mínimo ángulo con
+          respecto al \($p$\) actual, hacia la derecha
+10     \(**`if`** $p$\) es \($p_a$\)
+11       \($e =$\) TRUE
+12   \(**`else`**\)
+13     \($p =$\) el punto de \($Q$\) con mínimo ángulo con
+          respecto al \($p$\) actual, hacia la izquierda
+14   ELIMINAR(\($Q$\), \($p$\))
+15 \(**`return`** $P$\)
+```
+
 #### Análisis de complejidad {#sec-algoritmos-geometricos-poligono-jarvis-complejidad}
+
+El algoritmo se ejecuta en $O(\mbox{n}\,h)$, siendo $h$ la cantidad de vértices que hay en el polígono $P$. Las líneas 1 y 2 se ejecutan cada una en $O(\mbox{n})$, porque realizan una búsqueda lineal. Las líneas 3-5 tienen tiempo $O(1)$. El bucle **`while`** de las líneas 6-14 se ejecuta exactamente $h$ veces, una vez por cada vértice del polígono $P$. En el interior del bucle se inserta el punto $p$ actual a $P$ ($O(1)$), se busca el próximo punto que pertenezca a $P$ (el de menor ángulo con respecto a $p$, esta operación de búsqueda lineal se realiza en $O(\mbox{n}$) y por último se elimina el nuevo punto de $P$ de la lista $Q$ ($O(1)$). El cuerpo del bucle, por lo tanto tiene una complejidad temporal $O(\mbox{n})$ y se ejecuta $h$ veces. Finalmente, el tiempo de ejecución final del algoritmo `JARVIS-MARCH` es $O(\mbox{n}\,h)$.
 
 ## Encontrar los puntos más cercanos {#sec-algoritmos-geometricos-puntos}
 ### Algoritmo {#sec-algoritmos-geometricos-puntos-algoritmo}
