@@ -1,5 +1,72 @@
 # Implementación en C++ de los algoritmos {#sec-impl-algor}
-## Intersección entre varios segmentos {#sec-impl-algor-interseccion}
+La implementación de los algoritmos fue hecha en lenguaje C++. Todas las estructuras de datos necesarias para la implementación de los algoritmos fueron implementadas desde cero siguiendo las técnicas vistas en la materia. Sus definiciones formales como Tipos de Datos Abstractos se encuentra en la [sección &sec-anexo-tda;][#sec-anexo-tda]. En esta sección se hará un repaso en detalle por la implementación específica de cada algoritmo visto en la sección [sección &sec-algoritmos-geometricos;][#sec-algoritmos-geometricos].
+
+Todos los algoritmos fueron implementados como clases separadas, que al momento de la instanciación reciben por parámetro en su constructor los datos con los que trabaja. También, al momento de instanciación, se realizan todos los preprocesamientos que el algoritmo requiera sobre el conjunto de datos. El resultado del preprocesamiento es luego guardado en la instancia de la clase para la posterior ejecución del resto del algoritmo. En caso que la etapa de preprocesamiento detecte que el conjunto de datos que recibe no cumple con los criterios necesarios para la ejecución del algoritmo, estos no se almacenan y la instancia del algoritmo queda en un estado de _no poder ejecutarse_. Es posible saber luego de la instanciación si un algoritmo podrá ser ejecutado llamando al método `canRun`. Si la instancia del algoritmo queda en un estado de ejecución posible, llamando al método `run` se efectúa la ejecución del algoritmo. Luego de la primer ejecución del método `run`, el conjunto de datos de entrada es borrado de la instancia de la clase, su memoria liberada y el resultado es guardado. En caso de futuros llamados al método `run`, el resultado guardado es devuelto y no es necesaria una nueva ejecución del algoritmo.
+
+## Detectar intersección entre varios segmentos {#sec-impl-algor-interseccion}
+Este algoritmo está implementado en la clase `AnySegmentsIntersect`. En el constructor se verifica la única precondición: que no puede haber segmentos verticales. Además, como el algoritmo debe detener la línea de barrido en cada _punto de evento_, que son los extremos de los segmentos, éstos son agregados a una lista junto con marcadores para saber si el extremo izquierdo o derecho. El siguiente bucle `for` realiza esta tarea. La variable `endpoints` es una lista definida previamente, y el iterator `it` itera sobre el conjunto de segmentos de entrada.
+
+``` cpp
+for(; it != end; ++it) {
+  const Segment & segment = *it;
+
+  // PRECONDICIÓN: no puede haber segmentos verticales
+  if(segment.getFrom().getX() == segment.getTo().getX()) continue;
+
+  endpoints->add(Endpoint{segment, LEFT});
+  endpoints->add(Endpoint{segment, RIGHT});
+}
+```
+
+Cuando la línea de barrido llega a un punto de evento, el algoritmo requiere saber si hay algún segmento inmediatamente por encima o por debajo del segmento al que pertenece dicho punto. Para esto, es necesario mantener una estructura de árbol de búsqueda binario balanceado. Este árbol debe ordenar los segmentos a medida que son ingresados según el orden establecido para el algoritmo. El árbol de búsqueda utilizado es del tipo Red-Black, como ya se mencionó. La implementación realizada permite inicializar la estructura con un comparador a medida. El siguiente fragmento de código implementa el comparador para este algoritmo. Puede verse que recibe dos segmentos y usa el método descrito en la [sección &sec-algoritmos-geometricos-base-segmento-orden;] [#sec-algoritmos-geometricos-base-segmento-orden] para saber cuál se encuentra debajo y cuál por encima del otro. Se considera como menor al segmento que está por debajo. La implementación de árbol de búsqueda usa este comparador para buscar los elementos, por lo que sólo se devuelve `EQUAL` cuando se trata del mismo segmento.
+
+``` cpp
+Point sweepLinePoint;
+Comparator<Segment>::ComparatorFunction totalOrderComparator =
+  [&sweepLinePoint](
+    const Segment & lhs,
+    const Segment & rhs
+  ) -> Comparator<Segment>::Result {
+    return lhs.isBelowAtPoint(rhs, sweepLinePoint) ? LESS :
+           (rhs.isBelowAtPoint(lhs, sweepLinePoint) ? GREATER :
+           (lhs == rhs ? EQUAL : GREATER));
+  };
+```
+
+La parte principal del algoritmo está implementada en el siguiente fragmento de código. El bucle `for` recorre los puntos de eventos (mueve la línea de barrido) mientras que no se haya detectado una intersección. El bloque `if`realiza las operaciones que describe el algoritmo para cuando el extremo es izquierdo y el bloque `else` cuando el extremo es derecho. 
+
+``` cpp
+bool anySegmentsIntersect = false;
+for (; it != end && !anySegmentsIntersect; ++it) {
+  const Endpoint & endpoint = *it;
+  if(endpoint.position == LEFT) {
+    sweepLinePoint = endpoint.segment.getLeftmostEndpoint();
+    auto it_segment = tree.insert(endpoint.segment);
+    auto above = it_segment; above++;
+    auto below = it_segment; below--;
+
+    if( (above != tree_end && it_segment->intersects(*above))
+         || (below != tree_end
+              && it_segment->intersects(*below))
+      ) {
+      anySegmentsIntersect = true;
+    }
+  } else {
+    sweepLinePoint = endpoint.segment.getRightmostEndpoint();
+    auto it_segment = tree.search(endpoint.segment);
+    auto above = it_segment; above++;
+    auto below = it_segment; below--;
+
+    if(above != tree_end && below != tree_end
+        && above->intersects(*below))
+    {
+      anySegmentsIntersect = true;
+    }
+    tree.remove(it_segment);
+  }
+}
+```
+
 ## Graham Scan {#sec-impl-algor-graham}
 ## Jarvis March {#sec-impl-algor-jarvis}
 ## Encontrar los puntos más cercanos {#sec-impl-algor-puntos}

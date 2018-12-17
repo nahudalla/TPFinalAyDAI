@@ -47,6 +47,10 @@ namespace algor {
         std::optional<bool> result;
         std::optional<List<Endpoint>> endpoints;
     public:
+		bool canRun() const {
+			return this->endpoints.has_value();
+		}
+	
         explicit AnySegmentsIntersect(List<Segment> const& segments) {
             // Preparo los puntos para luego ser procesados
             auto it = segments.cbegin();
