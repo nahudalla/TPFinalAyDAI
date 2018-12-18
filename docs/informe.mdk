@@ -40,6 +40,11 @@ Appendix {
   }
 </style>
 ~ TexRaw
+\let\tempmargin\oddsidemargin
+\let\oddsidemargin\evensidemargin
+\let\evensidemargin\tempmargin
+\reversemarginpar
+  
 \fontfamily{lmss}
 \titleformat{\chapter}[display]
   {\normalfont\bfseries}{}{0pt}{\Large}

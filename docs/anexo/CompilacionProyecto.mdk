@@ -1,8 +1,0 @@
-## Compilación del proyecto {#sec-anexo-compilacion}
-### Descarga del código de fuente {#sec-anexo-compilacion-source}
-### Instalación de dependencias {#sec-anexo-compilacion-deps}
-#### Windows {#sec-anexo-compilacion-deps-win}
-#### Linux {#sec-anexo-compilacion-deps-linux}
-### Compilación {#sec-anexo-compilacion-compilacion}
-#### Casos de prueba {#sec-anexo-compilacion-compilacion-pruebas}
-#### Aplicación de consola {#sec-anexo-compilacion-compilacion-consola}
