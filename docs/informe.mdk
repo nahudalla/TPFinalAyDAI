@@ -2,7 +2,7 @@ Title         : Algoritmos Geométricos
 Subtitle      : Análisis y Diseño de Algoritmos I
 Author        : Nahuel Dallacamina Ortea
 Author Note   : Profesora a cargo: DEA. Liliana Favre
-Title Footer  : 2018 - BORRADOR al 15/12
+Title Footer  : 2018
 Authors Running: Nahuel Dallacamina Ortea
 Title Note    : Universidad Nacional del Centro de la Provincia de Buenos Aires
 Logo          : False
@@ -62,10 +62,12 @@ Appendix {
 [TOC]
 [INCLUDE=./Introduccion.mdk]
 [INCLUDE=./Algoritmos.mdk]
+
+~ blankpage
+&blankpagetext;
+~
+
 [INCLUDE=./ImplementacionAlgoritmos.mdk]
-<!--
-[INCLUDE=./CLI.mdk]
--->
 
 # Anexo {#sec-anexo}
 ## Tipos de datos abstractos {#sec-anexo-tda}
@@ -76,9 +78,8 @@ Appendix {
 [INCLUDE=./anexo/tda/Pila.mdk]
 [INCLUDE=./anexo/tda/RBTree.mdk]
 
-<!--
-[INCLUDE=./anexo/CompilacionProyecto.mdk]
-
 ## Bibliografía {#sec-anexo-bibliografia}
--->
+
+- Cormen T. H., Leiserson C. E., Rivest R. L., Stein C. (2009) Introduction to Algorithms, Third Edition. Cambridge, Massachusetts; London, England: The MIT Press.
+
 &pagebreak;
