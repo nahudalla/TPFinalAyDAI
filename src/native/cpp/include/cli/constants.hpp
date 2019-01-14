@@ -42,7 +42,7 @@ namespace cli::constants {
     namespace jarvis_march {
         TCONST FLAGS = "-j,--jarvis_march";
         TCONST SHORT_FLAG = "-j";
-        TCONST DESCRIPTION = "Aplica el algoritmo Jarvis' March al conjunto de entrada";
+        TCONST DESCRIPTION = "Aplica el algoritmo Jarvis March al conjunto de entrada";
         TCONST GROUP = groups::ALGORITHMS;
     }
 
@@ -78,7 +78,7 @@ namespace cli::constants {
     namespace input_recursive {
         TCONST FLAGS = "-r,--recursivo";
         TCONST SHORT_FLAG = "-r";
-        TCONST DESCRIPTION = "Profundidad de la búsqueda en directorios. Sin recursión: 0 (defecto). Infinita: -1";
+        TCONST DESCRIPTION = "Profundidad de la busqueda en directorios. Sin recursion: 0 (defecto). Infinita: -1";
         TCONST DEFAULT_STR = "0";
         TCONST GROUP = groups::INPUT;
         TCONST TYPE = types::INTEGER;
@@ -116,7 +116,7 @@ namespace cli::constants {
     TCONST FOOTER = "\nDesarrollado por Nahuel Dallacamina Ortea";
 
     namespace messages {
-        TCONST EMPTY_ALGORITHM_RESULT = "No se produjo ningún resultado.";
+        TCONST EMPTY_ALGORITHM_RESULT = "No se produjo ningun resultado.";
 
         std::string genFileNotFoundError(std::string const& filename);
         std::string genNotAFileError(std::string const& filename);

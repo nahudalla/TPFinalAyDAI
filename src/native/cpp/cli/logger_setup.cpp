@@ -1,9 +1,10 @@
+#include <third_party/rang.hpp>
+
 #include <iostream>
 
 #include <cli/logger_setup.hpp>
 
 #include <logger/Logger.hpp>
-#include <third_party/rang.hpp>
 
 using logger::Logger;
 
@@ -40,7 +41,7 @@ bool error_message_processor(Logger::Message const& msg) {
 }
 
 bool warning_message_processor(Logger::Message const& msg) {
-    std::cerr << rang::style::bold << rang::fg::yellow << "  ATENCIÓN: " << rang::style::reset
+    std::cerr << rang::style::bold << rang::fg::yellow << "  ATENCION: " << rang::style::reset
               << rang::fg::reset << msg.getMessage() << std::endl;
 
     return false;
@@ -55,7 +56,7 @@ bool info_message_processor(Logger::Message const & msg) {
     else if((msg.getFlags() & INFO_4) != 0) std::cout << rang::fg::magenta;
     else if((msg.getFlags() & INFO_5) != 0) std::cout << rang::fg::gray;
 
-    std::cout << rang::style::dim << rang::style::bold << "  INFORMACIÓN: " << rang::fg::reset << rang::style::reset
+    std::cout << rang::style::dim << rang::style::bold << "  INFORMACION: " << rang::fg::reset << rang::style::reset
               << rang::style::dim << msg.getMessage() << rang::style::reset << std::endl;
 
     return false;

@@ -17,7 +17,7 @@ namespace algor::__detail_RBTree {
         {}
 
         DataNode(T data, Node<T> * parent, Node<T> * left, Node<T> * right, Color color)
-                : Node<T>(parent, left, right, color), DataNode(std::move(data))
+                : Node<T>(parent, left, right, color), data(std::move(data))
         {}
 
         DataNode(DataNode const&) = default;

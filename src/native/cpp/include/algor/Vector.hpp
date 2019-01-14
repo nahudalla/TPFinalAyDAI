@@ -38,7 +38,7 @@ namespace algor {
 
         Vector &operator=(Vector &&) noexcept = default;
 
-        ~Vector() = default;
+        ~Vector() override = default;
 
         int crossProduct(Vector const &rhs) const {
             return (this->getX() * rhs.getY()) - (rhs.getX() * this->getY());

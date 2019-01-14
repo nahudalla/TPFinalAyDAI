@@ -2,3 +2,6 @@ node_modules
 cmake-build-*
 web-build-*
 packaged-release
+docs/out
+.idea/workspace.xml
+

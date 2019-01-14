@@ -1,14 +1,14 @@
 #include <string>
 #include <utility>
 #include <functional>
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 
 #include <cli/init_utils.hpp>
 #include <cli/constants.hpp>
 
 #include <algor/Stack.hpp>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = boost::filesystem;
 
 std::string validate_input_file(std::string const& filename);
 std::string validate_input_directory(std::string const& filename);
@@ -185,7 +185,7 @@ std::function<bool(CLI::results_t const &)> gen_dir_input_processor(CLI::App &ap
             auto & depth = pair.second;
 
             for(auto & p : fs::directory_iterator(directory)) {
-                if(fs::is_regular_file(p.path()) && p.path().extension().compare(input_directory::EXTENSION) == 0) {
+                if(fs::is_regular_file(p.path()) && p.path().extension().compare(fs::path(input_directory::EXTENSION)) == 0) {
                     filesList.add(p.path());
                 } else if((recursion_depth == -1 || depth < recursion_depth) && fs::is_directory(p.path())) {
                     directories.push({p.path(), depth+1});

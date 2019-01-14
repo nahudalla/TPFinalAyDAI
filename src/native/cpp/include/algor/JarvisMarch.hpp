@@ -27,14 +27,13 @@ namespace algor {
 
         explicit JarvisMarch(List<Point> points) {
             {
-                // PRECONDICION: La lista tiene que tener al menos tres puntos que no sean colineales
+                // PRECONDICION: La lista tiene que tener al menos tres puntos
                 auto it1 = points.begin();
                 auto it2 = it1; ++it2;
                 auto it3 = it2; ++it3;
                 auto end = points.end();
 
-                if(it1 == end || it2 == end || it3 == end
-                   || Vector(*it1, *it2).isColinear(Vector(*it1, *it3))) {
+                if(it1 == end || it2 == end || it3 == end) {
                     return;
                 }
             }

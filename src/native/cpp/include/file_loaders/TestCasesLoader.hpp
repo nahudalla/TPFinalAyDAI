@@ -5,7 +5,7 @@
 
 #include <type_traits>
 #include <fstream>
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 
 #include <file_loaders/TestCasesLoader_impl/SolutionDirNames.hpp>
 #include <file_loaders/InputParser.hpp>
@@ -14,7 +14,7 @@
 
 #include <algor/List.hpp>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = boost::filesystem;
 
 namespace file_loaders {
 #if !defined DEBUG && !defined NDEBUG
@@ -62,7 +62,7 @@ namespace file_loaders {
 
             for (auto & p : fs::directory_iterator(directory)) {
                 const auto & test_case_path = p.path();
-                if(!fs::is_regular_file(p) || test_case_path.extension().compare(".txt") != 0) continue;
+                if(!fs::is_regular_file(p) || test_case_path.extension().compare(fs::path(".txt")) != 0) continue;
 
                 test_case_paths.add(test_case_path);
             }

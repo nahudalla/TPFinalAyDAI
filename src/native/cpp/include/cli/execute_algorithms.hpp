@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 
 #include <third_party/CLI11.hpp>
 
@@ -13,7 +13,7 @@
 #include <file_loaders/InputParser.hpp>
 #include <algor/List.hpp>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = boost::filesystem;
 
 namespace cli {
     template <typename Algorithm>
@@ -74,18 +74,18 @@ namespace cli {
 
         if(*(app.get_option(any_segments_intersect::SHORT_FLAG))) {
             nothing_to_do = false;
-            logger::log(logger::flags::INFO, "Ejecutando algoritmo intersección de segmentos...");
+            logger::log(logger::flags::INFO, "Ejecutando algoritmo interseccion de segmentos...");
             execute<algor::AnySegmentsIntersect>(writer, TFileLoader<algor::AnySegmentsIntersect>(filenames));
         }
 
         if(*(app.get_option(closest_pair_of_points::SHORT_FLAG))) {
             nothing_to_do = false;
-            logger::log(logger::flags::INFO, "Ejecutando algoritmo puntos más cercanos...");
+            logger::log(logger::flags::INFO, "Ejecutando algoritmo puntos mas cercanos...");
             execute<algor::ClosestPairOfPoints>(writer, TFileLoader<algor::ClosestPairOfPoints>(filenames));
         }
 
         if(nothing_to_do) {
-            logger::log(logger::flags::WARNING, "No se seleccionó ningún algoritmo. Use --ayuda para obtener ayuda");
+            logger::log(logger::flags::WARNING, "No se selecciono ningun algoritmo. Use --ayuda para obtener ayuda");
         }
     }
 }
